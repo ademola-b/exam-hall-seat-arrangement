@@ -30,83 +30,82 @@ class _StudentInvigilatorState extends State<StudentInvigilator> {
                   children: [
                     DefaultContainer(
                       // text: "Hello, \n ${_username.titleCase()}",
-                      child: Row(
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Spacer(),
-                          DefaultText(
-                            size: 20.0,
-                            align: TextAlign.center,
-                            text:
-                                "Date \n ${DateFormat("dd/MM/yyyy").format(DateTime.now())}",
-                            color: Constants.primaryColor,
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Spacer(),
+                            DefaultText(
+                              size: 20.0,
+                              align: TextAlign.center,
+                              text:
+                                  "Date \n ${DateFormat("dd/MM/yyyy").format(DateTime.now())}",
+                              color: Constants.primaryColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 70.0),
                     DefaultContainer(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              GestureDetector(
-                                child: Column(
-                                  children: [
-                                    ClipOval(
-                                      child: Container(
-                                        color: Constants.backgroundColor,
-                                        child: IconButton(
-                                          onPressed: () {
-                                            Navigator.pushNamed(
-                                                context, '/student');
-                                          },
-                                          icon: const Icon(Icons.people),
-                                          iconSize: 70,
-                                          color: Constants.splashBackColor,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  onTap: () =>
+                                      Navigator.pushNamed(context, '/student'),
+                                  child: Column(
+                                    children: [
+                                      ClipOval(
+                                        child: Container(
+                                          color: Constants.backgroundColor,
+                                          child: Image.asset(
+                                            "assets/images/student.png",
+                                            width: 100,
+                                            height: 100,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    DefaultText(
-                                      text: "Students",
-                                      size: 20.0,
-                                      color: Constants.primaryColor,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                child: Column(
-                                  children: [
-                                    ClipOval(
-                                      child: Container(
+                                      DefaultText(
+                                        text: "Students",
+                                        size: 20.0,
                                         color: Constants.primaryColor,
-                                        child: IconButton(
-                                          onPressed: () {
-                                            Navigator.pushNamed(
-                                                context, '/invigilator');
-                                          },
-                                          icon: const Icon(Icons.people),
-                                          iconSize: 70,
-                                          color: Constants.splashBackColor,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () => Navigator.pushNamed(
+                                      context, '/invigilator'),
+                                  child: Column(
+                                    children: [
+                                      ClipOval(
+                                        child: Container(
+                                          color: Constants.primaryColor,
+                                          child: Image.asset(
+                                            "assets/images/invigilator.png",
+                                            width: 100,
+                                            height: 100,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    DefaultText(
-                                      text: "Invigilator",
-                                      size: 20.0,
-                                      color: Constants.primaryColor,
-                                    )
-                                  ],
+                                      DefaultText(
+                                        text: "Invigilator",
+                                        size: 20.0,
+                                        color: Constants.primaryColor,
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 50.0,
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

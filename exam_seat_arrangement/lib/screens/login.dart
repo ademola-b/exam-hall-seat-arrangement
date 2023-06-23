@@ -2,10 +2,7 @@ import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:exam_seat_arrangement/utils/defaultButton.dart';
 import 'package:exam_seat_arrangement/utils/defaultText.dart';
 import 'package:exam_seat_arrangement/utils/defaultTextFormField.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -44,12 +41,14 @@ class _LoginState extends State<Login> {
                       child: Column(
                     children: [
                       DefaultTextFormField(
+                        label: "Username",
                         obscureText: _obscureText,
                         fontSize: 20.0,
                         icon: Icons.person,
                       ),
                       const SizedBox(height: 25.0),
                       DefaultTextFormField(
+                        label: "Password",
                         obscureText: _obscureText,
                         fontSize: 20.0,
                         icon: Icons.lock,
@@ -67,8 +66,7 @@ class _LoginState extends State<Login> {
                         width: size.width,
                         child: DefaultButton(
                           onPressed: () {
-                            Navigator.popAndPushNamed(
-                                context, '/examOfficerNavbar');
+                            Navigator.popAndPushNamed(context, '/bottomNavbar');
                           },
                           text: 'Login',
                           textSize: 22.0,
@@ -80,18 +78,18 @@ class _LoginState extends State<Login> {
                         children: [
                           const DefaultText(
                             size: 18.0,
-                            text: "Don't have an account? ",
+                            text: "Having trouble logging in? ",
                             weight: FontWeight.normal,
                           ),
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, '/register');
+                                // Navigator.pushNamed(context, '/register');
                               },
                               child: DefaultText(
                                 size: 18.0,
                                 color: Constants.primaryColor,
-                                text: "Register Now",
+                                text: "Contact Admin",
                                 weight: FontWeight.bold,
                               ),
                             ),

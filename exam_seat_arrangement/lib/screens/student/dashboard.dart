@@ -30,97 +30,107 @@ class _DashboardState extends State<Dashboard> {
               children: [
                 DefaultContainer(
                   // text: "Hello, \n ${_username.titleCase()}",
-                  child: Row(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DefaultText(
-                        size: 20.0,
-                        text: "Hello, \n ${_username.titleCase()}",
-                        // text: "Hello, \n ${username!.titleCase()}",
-                        color: Constants.primaryColor,
-                      ),
-                      const Spacer(),
-                      DefaultText(
-                        size: 20.0,
-                        align: TextAlign.center,
-                        text:
-                            "Date \n ${DateFormat("dd/MM/yyyy").format(DateTime.now())}",
-                        color: Constants.primaryColor,
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DefaultText(
+                          size: 20.0,
+                          text: "Hello, \n ${_username.titleCase()}",
+                          // text: "Hello, \n ${username!.titleCase()}",
+                          color: Constants.primaryColor,
+                        ),
+                        const Spacer(),
+                        DefaultText(
+                          size: 20.0,
+                          align: TextAlign.center,
+                          text:
+                              "Date \n ${DateFormat("dd/MM/yyyy").format(DateTime.now())}",
+                          color: Constants.primaryColor,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 70.0),
-                const DefaultTextFormField(obscureText: false),
+                const DefaultTextFormField(
+                  obscureText: false,
+                  label: "Date",
+                ),
                 const SizedBox(height: 30.0),
                 DefaultContainer(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          DefaultText(
-                            text: "COURSE",
-                            size: 20.0,
-                            color: Constants.primaryColor,
-                          ),
-                          const Spacer(),
-                          DefaultText(
-                            text: "XXX",
-                            size: 20.0,
-                            color: Constants.primaryColor,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        children: [
-                          DefaultText(
-                            text: "SEMESTER",
-                            size: 20.0,
-                            color: Constants.primaryColor,
-                          ),
-                          const Spacer(),
-                          DefaultText(
-                            text: "XXXXXX",
-                            size: 20.0,
-                            color: Constants.primaryColor,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        children: [
-                          DefaultText(
-                            text: "HALL NAME",
-                            size: 20.0,
-                            color: Constants.primaryColor,
-                          ),
-                          const Spacer(),
-                          DefaultText(
-                            text: "XXXXXX",
-                            size: 20.0,
-                            color: Constants.primaryColor,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        children: [
-                          DefaultText(
-                            text: "SEAT NO.",
-                            size: 20.0,
-                            color: Constants.primaryColor,
-                          ),
-                          const Spacer(),
-                          DefaultText(
-                            text: "XXXXXX",
-                            size: 20.0,
-                            color: Constants.primaryColor,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            DefaultText(
+                              text: "COURSE",
+                              size: 20.0,
+                              color: Constants.primaryColor,
+                            ),
+                            // const Spacer(),
+                            DefaultText(
+                              text: "XXX",
+                              size: 20.0,
+                              color: Constants.primaryColor,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            DefaultText(
+                              text: "SEMESTER",
+                              size: 20.0,
+                              color: Constants.primaryColor,
+                            ),
+                            DefaultText(
+                              text: "XXXXXX",
+                              size: 20.0,
+                              color: Constants.primaryColor,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            DefaultText(
+                              text: "HALL NAME",
+                              size: 20.0,
+                              color: Constants.primaryColor,
+                            ),
+                            DefaultText(
+                              text: "XXXXXX",
+                              size: 20.0,
+                              color: Constants.primaryColor,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            DefaultText(
+                              text: "SEAT NO.",
+                              size: 20.0,
+                              color: Constants.primaryColor,
+                            ),
+                            DefaultText(
+                              text: "XXXXXX",
+                              size: 20.0,
+                              color: Constants.primaryColor,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20.0),
+                      ],
+                    ),
                   ),
                 ),
               ],

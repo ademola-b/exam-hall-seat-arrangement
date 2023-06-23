@@ -22,10 +22,6 @@ class _HallState extends State<Hall> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Constants.splashBackColor,
-        // appBar: AppBar(
-        //   title: const DefaultText(text: "Add Hall", size: 18.0),
-        //   centerTitle: true,
-        // ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
           child: SingleChildScrollView(
@@ -43,42 +39,45 @@ class _HallState extends State<Hall> {
                     ),
                     DefaultText(
                       text: "Add Hall",
-                      size: 30.0,
+                      size: 25.0,
                       color: Constants.primaryColor,
                     )
                   ],
                 ),
                 const SizedBox(height: 40.0),
                 DefaultContainer(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(
-                            width: size.width / 2.5,
-                            child: DefaultButton(
-                                onPressed: () {},
-                                text: "Select File",
-                                textSize: 20.0),
-                          ),
-                          SizedBox(
-                            width: size.width / 2.5,
-                            child: DefaultButton(
-                                onPressed: () {
-                                  _isDisabled ? null : print("object");
-                                },
-                                text: "Upload File",
-                                textSize: 20.0),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 5.0),
-                      DefaultText(
-                          text: "$fileSelect",
-                          size: 18.0,
-                          color: Constants.primaryColor)
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(
+                              width: size.width / 2.5,
+                              child: DefaultButton(
+                                  onPressed: () {},
+                                  text: "Select File",
+                                  textSize: 20.0),
+                            ),
+                            SizedBox(
+                              width: size.width / 2.5,
+                              child: DefaultButton(
+                                  onPressed: () {
+                                    _isDisabled ? null : print("object");
+                                  },
+                                  text: "Upload File",
+                                  textSize: 20.0),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5.0),
+                        DefaultText(
+                            text: "$fileSelect",
+                            size: 18.0,
+                            color: Constants.primaryColor)
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 70.0),
@@ -86,10 +85,16 @@ class _HallState extends State<Hall> {
                     child: Column(
                   children: [
                     const DefaultTextFormField(
-                        obscureText: false, fontSize: 25.0),
+                      obscureText: false,
+                      fontSize: 25.0,
+                      label: "Hall Name",
+                    ),
                     const SizedBox(height: 20.0),
                     const DefaultTextFormField(
-                        obscureText: false, fontSize: 25.0),
+                      obscureText: false,
+                      fontSize: 25.0,
+                      label: "No. of Seats",
+                    ),
                     const SizedBox(height: 20.0),
                     SizedBox(
                       width: size.width,

@@ -1,4 +1,5 @@
 import 'package:exam_seat_arrangement/utils/constants.dart';
+import 'package:exam_seat_arrangement/utils/defaultText.dart';
 import 'package:flutter/material.dart';
 
 class DefaultTextFormField extends StatefulWidget {
@@ -69,8 +70,8 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
         fillColor: Colors.white,
         // fillColor: widget.fillColor,
         filled: true,
-        // label: DefaultText(size: 20.0, text: "${widget.label}"),
-        // labelStyle: TextStyle(color: Constants.primaryColor),
+        label: DefaultText(size: 20.0, text: "${widget.label}"),
+        labelStyle: TextStyle(color: Constants.primaryColor),
         prefixIcon: Icon(widget.icon),
         prefixIconColor: Constants.primaryColor,
         suffixIcon: widget.suffixIcon,

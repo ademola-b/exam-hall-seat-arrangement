@@ -54,7 +54,10 @@ class _SeatArrangementState extends State<SeatArrangement> {
                     child: Column(
                   children: [
                     const DefaultTextFormField(
-                        obscureText: false, fontSize: 25.0),
+                      obscureText: false,
+                      fontSize: 25.0,
+                      label: "Date",
+                    ),
                     const SizedBox(height: 20.0),
                     DefaultDropDown(
                         onChanged: (newVal) {},

@@ -40,10 +40,10 @@ class _MoreState extends State<More> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            appBar: AppBar(
-              title: const DefaultText(text: 'PROFILE', size: 22.0),
-              centerTitle: true,
-            ),
+            // appBar: AppBar(
+            //   title: const DefaultText(text: 'PROFILE', size: 22.0),
+            //   centerTitle: true,
+            // ),
             backgroundColor: Constants.backgroundColor,
             body: Padding(
               padding:
@@ -65,12 +65,16 @@ class _MoreState extends State<More> {
                           ),
                         ),
                       ),
-                      const DefaultText(
-                          size: 20.0, text: "Name", weight: FontWeight.bold),
-                      const DefaultText(
+                      DefaultText(
+                        size: 25.0,
+                        text: "Name",
+                        weight: FontWeight.bold,
+                        color: Constants.splashBackColor,
+                      ),
+                      DefaultText(
                           size: 18.0,
-                          text: "username",
-                          color: Colors.grey,
+                          text: "registration number",
+                          color: Constants.splashBackColor,
                           weight: FontWeight.bold),
                     ],
                   ),
@@ -121,7 +125,8 @@ class _MoreState extends State<More> {
                     title: const DefaultText(size: 15.0, text: "Logout"),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () async {
-                      Navigator.popAndPushNamed(context, '/login');
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/login', (route) => false);
                     },
                   ),
                 ),

@@ -50,35 +50,38 @@ class _InvigilatorState extends State<Invigilator> {
                 ),
                 const SizedBox(height: 40.0),
                 DefaultContainer(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(
-                            width: size.width / 2.5,
-                            child: DefaultButton(
-                                onPressed: () {},
-                                text: "Select File",
-                                textSize: 20.0),
-                          ),
-                          SizedBox(
-                            width: size.width / 2.5,
-                            child: DefaultButton(
-                                onPressed: () {
-                                  _isDisabled ? null : print("object");
-                                },
-                                text: "Upload File",
-                                textSize: 20.0),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 5.0),
-                      DefaultText(
-                          text: "$fileSelect",
-                          size: 18.0,
-                          color: Constants.primaryColor)
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(
+                              width: size.width / 2.5,
+                              child: DefaultButton(
+                                  onPressed: () {},
+                                  text: "Select File",
+                                  textSize: 20.0),
+                            ),
+                            SizedBox(
+                              width: size.width / 2.5,
+                              child: DefaultButton(
+                                  onPressed: () {
+                                    _isDisabled ? null : print("object");
+                                  },
+                                  text: "Upload File",
+                                  textSize: 20.0),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5.0),
+                        DefaultText(
+                            text: "$fileSelect",
+                            size: 18.0,
+                            color: Constants.primaryColor)
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 70.0),
@@ -86,10 +89,17 @@ class _InvigilatorState extends State<Invigilator> {
                     child: Column(
                   children: [
                     const DefaultTextFormField(
-                        obscureText: false, fontSize: 25.0),
+                      obscureText: false,
+                      fontSize: 25.0,
+                      label: "Name",
+                    ),
                     const SizedBox(height: 20.0),
                     const DefaultTextFormField(
-                        obscureText: false, fontSize: 25.0),
+                      obscureText: false,
+                      fontSize: 25.0,
+                      label: "Phone No",
+                      keyboardInputType: TextInputType.numberWithOptions(),
+                    ),
                     const SizedBox(height: 50.0),
                     SizedBox(
                       width: size.width,

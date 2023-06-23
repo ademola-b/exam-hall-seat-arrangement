@@ -45,7 +45,7 @@ class _AllocateHallState extends State<AllocateHall> {
                     ),
                     DefaultText(
                       text: "Allocate Hall",
-                      size: 30.0,
+                      size: 25.0,
                       color: Constants.primaryColor,
                     )
                   ],
@@ -56,7 +56,7 @@ class _AllocateHallState extends State<AllocateHall> {
                     child: Column(
                   children: [
                     const DefaultTextFormField(
-                        obscureText: false, fontSize: 25.0),
+                        obscureText: false, fontSize: 25.0, label: "Date"),
                     const SizedBox(height: 20.0),
                     DefaultDropDown(
                         onChanged: (newVal) {},
@@ -81,7 +81,10 @@ class _AllocateHallState extends State<AllocateHall> {
                         onSaved: (dynamic) {}),
                     const SizedBox(height: 20.0),
                     const DefaultTextFormField(
-                        obscureText: false, fontSize: 25.0),
+                      obscureText: false,
+                      fontSize: 25.0,
+                      label: "No. of Seats",
+                    ),
                     const SizedBox(height: 20.0),
                     DefaultDropDown(
                         onChanged: (newVal) {},
