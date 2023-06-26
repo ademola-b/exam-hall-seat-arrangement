@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from dj_rest_auth.serializers import UserDetailsSerializer
-from . models import User, Student, Department
+from . models import (User, Student, 
+                      Invigilator, Department)
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,16 +17,17 @@ class UserDetailsSerializer(UserDetailsSerializer):
     # dept_id = DepartmentSerializer()
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('name', 'dept_id', 'is_staff', 'is_examofficer', 'is_student', 'is_invigilator')
-        # fields = [
-        #     'name',
-        #     'username',
-        #     'dept_id', 
-        #     'is_staff', 
-        #     'is_examofficer', 
-        #     'is_student', 
-        #     'is_invigilator'
-        # ]
+        # fields = UserDetailsSerializer.Meta.fields + ('name', 'dept_id', 'is_staff', 'is_examofficer', 'is_student', 'is_invigilator')
+        fields = [
+            'pk',
+            'name',
+            'username',
+            'dept_id', 
+            'is_staff', 
+            'is_examofficer', 
+            'is_student', 
+            'is_invigilator'
+        ]
         read_only_fields = ('is_staff', 'is_examofficer', 'is_student', 'is_invigilator')
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -37,4 +39,15 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = [
             'user_id',
             'level'
+        ]
+        
+class InvigilatorSerializer(serializers.ModelSerializer):
+
+    user_id = UserDetailsSerializer(required=False)
+
+    class Meta:
+        model = Invigilator
+        fields = [
+            'user_id',
+            'phone'
         ]

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:exam_seat_arrangement/main.dart';
 import 'package:exam_seat_arrangement/models/create_hall_response.dart';
+import 'package:exam_seat_arrangement/models/invigilator_response.dart';
 import 'package:exam_seat_arrangement/models/login_response.dart';
 import 'package:exam_seat_arrangement/models/student_response.dart';
 import 'package:exam_seat_arrangement/models/user_response.dart';
@@ -43,6 +44,8 @@ class RemoteServices {
               await RemoteServices.userResponse(context, responseData['key']);
           if (user_details != null) {
             if (user_details.isExamofficer) {
+              sharedPreferences.setString(
+                  "examOfficerDept", user_details.deptId);
               Navigator.popAndPushNamed(context, '/examOfficerNavbar');
             } else if (user_details.isInvigilator || user_details.isStudent) {
               Navigator.popAndPushNamed(context, '/bottomNavbar');
@@ -149,6 +152,36 @@ class RemoteServices {
 
         // ScaffoldMessenger.of(context)
         //     .showSnackBar(Constants.snackBar(context, output, true));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
+    return null;
+  }
+
+  static Future<InvigilatorResponse?> createInvigilator(context,
+      {List<Map<String, dynamic>>? data}) async {
+    try {
+      Response response = await http.post(
+        addInvigilatorUrl,
+        body: jsonEncode(data),
+        headers: <String, String>{
+          'content-type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(Constants.snackBar(
+            context, "Invigilator(s) Account Created Successfully", true));
+      } else {
+        var responseData = jsonDecode(response.body);
+        for (var responses in responseData) {
+          for (var element in responses.keys) {
+            var value = responses[element];
+            ScaffoldMessenger.of(context)
+                .showSnackBar(Constants.snackBar(context, "$value", false));
+          }
+        }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

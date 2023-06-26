@@ -88,7 +88,7 @@ class Student(models.Model):
 class Invigilator(models.Model):
     profile_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     user_id = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    phone = models.IntegerField(blank=True, null=True)
+    phone = models.CharField(max_length=11, blank=True, null=True)
 
     def __str__(self):
         return self.user_id.username

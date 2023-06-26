@@ -48,7 +48,7 @@ class _StudentState extends State<Student> {
               builder: (context) =>
                   const Center(child: CircularProgressIndicator()),
             )
-          : SizedBox.shrink();
+          : const SizedBox.shrink();
     });
   }
 
@@ -60,11 +60,6 @@ class _StudentState extends State<Student> {
 
     // check if no file is picked
     if (result == null) return;
-    // showDialog(
-    //   context: context,
-    //   barrierDismissible: false,
-    //   builder: (context) => const Center(child: CircularProgressIndicator()),
-    // );
 
     filePath = result.files.first.path!;
 
@@ -83,7 +78,8 @@ class _StudentState extends State<Student> {
         // catch an exception if the user selects the wrong .csv file
         try {
           // check first row if contains the correct data(header)
-          List fileHeader = fields.sublist(0);
+          List<dynamic> fileHeader = fields.first;
+          print("fileHeader: $fileHeader");
           if (fileHeader[0] != 'name' &&
               fileHeader[1] != 'username' &&
               fileHeader[2] != 'level') {
@@ -145,9 +141,9 @@ class _StudentState extends State<Student> {
     await RemoteServices.createStudent(context, data: [
       {
         "user_id": {
-          "username": _regNo.toUpperCase(),
-          "name": _name.toTitleCase(),
-          "dept_id": examOfficerDept
+          "name": _name.toUpperCase(),
+          "username": _regNo.toTitleCase(),
+          "dept_id": sharedPreferences.getString("examOfficerDept")
         },
         "level": _level
       }
@@ -240,7 +236,7 @@ class _StudentState extends State<Student> {
                                         color: Colors.grey,
                                         onPressed: () {
                                           _isLoading = true;
-                                          _isDisabled ? null : _uploadFile();
+                                          _isDisabled ? null : print("");
                                         },
                                         text: "Upload File",
                                         textSize: 20.0),
