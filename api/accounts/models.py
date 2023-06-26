@@ -78,7 +78,7 @@ class User(AbstractBaseUser):
 class Student(models.Model):
     profile_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     user_id = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    session_id = models.ForeignKey(Session, on_delete=models.CASCADE)
+    session_id = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
     level = models.CharField(max_length=10, choices=[('1', 'ND I'), ('2', 'ND II'),('3', 'HND I'),('4', 'HND II'),])
 
     def __str__(self):

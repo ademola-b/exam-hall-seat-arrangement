@@ -1,0 +1,59 @@
+Future _pickCSV() async {
+    setState(() {
+      selected = "No selected file";
+    });
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+    );
+
+    // if no file is found
+    if (result == null) return;
+
+    showDialog(
+      context: Get.context!,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+    filePath = result.files.first.path!;
+
+    final String extension = path.extension(filePath!);
+
+    if (extension.toLowerCase() == '.csv') {
+      final input = File(filePath!).openRead();
+      final fields = await input
+          .transform(utf8.decoder)
+          .transform(const CsvToListConverter())
+          .toList();
+
+      createAccountController.fields = fields;
+
+      for (var element in fields) {
+        final regNo = element[0].toString().toLowerCase();
+
+        QuerySnapshot snaps = await FirebaseFirestore.instance
+            .collection('Users')
+            .where("regNo", isEqualTo: regNo)
+            .get();
+        if (snaps.docs.length != 1) {
+          preSelected = "File Selected!";
+          setState(() {
+            isDisabled = false;
+          });
+        } else {
+          preSelected = "No selected file";
+          ScaffoldMessenger.of(Get.context!).showSnackBar(delegatedSnackBar(
+              "Invalid CSV! contains existing account", false));
+          break;
+        }
+      }
+      setState(() {
+        selected = preSelected;
+      });
+    } else {
+      ScaffoldMessenger.of(Get.context!)
+          .showSnackBar(delegatedSnackBar("Invalid file!", false));
+    }
+
+    navigator!.pop(Get.context!);
+  }
+

@@ -36,21 +36,22 @@ class _DefaultDropDownState extends State<DefaultDropDown> {
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0)),
           borderSide: BorderSide(
-            color: Colors.black,
+            color: Constants.primaryColor,
             width: 1.0,
           ),
         ),
         focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.0)),
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            borderSide: BorderSide(color: Constants.primaryColor, width: 1.0)),
         filled: true,
-        fillColor: Constants.primaryColor,
+        fillColor: Constants.splashBackColor,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
       ),
       hint: DefaultText(
         size: 20,
         text: widget.text,
-        color: Constants.splashBackColor,
+        color: Constants.primaryColor,
       ),
       isExpanded: true,
       value: widget.dropdownvalue,

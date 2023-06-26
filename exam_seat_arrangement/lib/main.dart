@@ -5,11 +5,16 @@ import 'package:exam_seat_arrangement/screens/exam_officer/invigilator.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/seatArrangement.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/seatArrangementView.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/student.dart';
+import 'package:exam_seat_arrangement/screens/login.dart';
 import 'package:exam_seat_arrangement/screens/splash.dart';
 import 'package:exam_seat_arrangement/screens/student/bottomNavbar.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+late SharedPreferences sharedPreferences;
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  sharedPreferences = await SharedPreferences.getInstance();
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: '/',
@@ -24,6 +29,9 @@ Route<dynamic> getRoutes(RouteSettings settings) {
 
     case '/bottomNavbar':
       return _buildRoute(settings, const Navbar());
+  
+    case '/login':
+      return _buildRoute(settings, const Login());
 
     case '/examOfficerNavbar':
       return _buildRoute(settings, const ExamOfficerNavbar());
@@ -36,13 +44,13 @@ Route<dynamic> getRoutes(RouteSettings settings) {
 
     case '/seatArrangement':
       return _buildRoute(settings, const SeatArrangement());
-  
+
     case '/seatArrangementView':
       return _buildRoute(settings, const SeatArrangementView());
-  
+
     case '/student':
       return _buildRoute(settings, const Student());
-    
+
     case '/invigilator':
       return _buildRoute(settings, const Invigilator());
 

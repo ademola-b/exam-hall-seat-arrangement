@@ -1,3 +1,6 @@
+import 'package:exam_seat_arrangement/main.dart';
+import 'package:exam_seat_arrangement/models/user_response.dart';
+import 'package:exam_seat_arrangement/services/remote_services.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:exam_seat_arrangement/utils/defaultContainer.dart';
 import 'package:exam_seat_arrangement/utils/defaultText.dart';
@@ -17,7 +20,24 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final String _username = "user";
+  String _username = "user";
+
+  _getUser() async {
+    UserDetailsResponse? user = await RemoteServices.userResponse(
+        context, sharedPreferences.getString('token'));
+    // return user;
+    setState(() {
+      _username = user!.username;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,15 +49,14 @@ class _DashboardState extends State<Dashboard> {
             child: Column(
               children: [
                 DefaultContainer(
-                  // text: "Hello, \n ${_username.titleCase()}",
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Row(
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DefaultText(
                           size: 20.0,
-                          text: "Hello, \n ${_username.titleCase()}",
+                          text: "Hello, \n ${_username.toUpperCase()}",
                           // text: "Hello, \n ${username!.titleCase()}",
                           color: Constants.primaryColor,
                         ),

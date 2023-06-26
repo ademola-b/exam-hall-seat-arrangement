@@ -1,3 +1,4 @@
+import 'package:exam_seat_arrangement/services/remote_services.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:exam_seat_arrangement/utils/defaultButton.dart';
 import 'package:exam_seat_arrangement/utils/defaultText.dart';
@@ -13,11 +14,22 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool _obscureText = false;
+  final _form = GlobalKey<FormState>();
+  late String _username;
+  late String _password;
 
   _toggle() {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  _login() async {
+    var isValid = _form.currentState!.validate();
+    if (!isValid) return;
+    _form.currentState!.save();
+
+    await RemoteServices.login(context, _username.toUpperCase(), _password);
   }
 
   @override
@@ -38,66 +50,71 @@ class _LoginState extends State<Login> {
                       width: 200.0, height: 200.0),
                   const SizedBox(height: 20.0),
                   Form(
+                      key: _form,
                       child: Column(
-                    children: [
-                      DefaultTextFormField(
-                        label: "Username",
-                        obscureText: _obscureText,
-                        fontSize: 20.0,
-                        icon: Icons.person,
-                      ),
-                      const SizedBox(height: 25.0),
-                      DefaultTextFormField(
-                        label: "Password",
-                        obscureText: _obscureText,
-                        fontSize: 20.0,
-                        icon: Icons.lock,
-                        suffixIcon: GestureDetector(
-                            onTap: () {
-                              _toggle();
-                            },
-                            child: Icon(_obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility)),
-                      ),
-                      const SizedBox(height: 20.0),
-                      const SizedBox(height: 20.0),
-                      SizedBox(
-                        width: size.width,
-                        child: DefaultButton(
-                          onPressed: () {
-                            Navigator.popAndPushNamed(context, '/bottomNavbar');
-                          },
-                          text: 'Login',
-                          textSize: 22.0,
-                        ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const DefaultText(
-                            size: 18.0,
-                            text: "Having trouble logging in? ",
-                            weight: FontWeight.normal,
+                          DefaultTextFormField(
+                            label: "Username",
+                            obscureText: _obscureText,
+                            fontSize: 20.0,
+                            icon: Icons.person,
+                            onSaved: (value) => _username = value!,
+                            validator: Constants.validator,
                           ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                // Navigator.pushNamed(context, '/register');
+                          const SizedBox(height: 25.0),
+                          DefaultTextFormField(
+                            label: "Password",
+                            obscureText: _obscureText,
+                            fontSize: 20.0,
+                            icon: Icons.lock,
+                            onSaved: (value) => _password = value!,
+                            validator: Constants.validator,
+                            suffixIcon: GestureDetector(
+                                onTap: () {
+                                  _toggle();
+                                },
+                                child: Icon(_obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility)),
+                          ),
+                          const SizedBox(height: 20.0),
+                          const SizedBox(height: 20.0),
+                          SizedBox(
+                            width: size.width,
+                            child: DefaultButton(
+                              onPressed: () {
+                                _login();
                               },
-                              child: DefaultText(
-                                size: 18.0,
-                                color: Constants.primaryColor,
-                                text: "Contact Admin",
-                                weight: FontWeight.bold,
-                              ),
+                              text: 'Login',
+                              textSize: 22.0,
                             ),
                           ),
+                          const SizedBox(height: 20.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const DefaultText(
+                                size: 18.0,
+                                text: "Having trouble logging in? ",
+                                weight: FontWeight.normal,
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // Navigator.pushNamed(context, '/register');
+                                  },
+                                  child: DefaultText(
+                                    size: 18.0,
+                                    color: Constants.primaryColor,
+                                    text: "Contact Exam Officer",
+                                    weight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
                         ],
-                      )
-                    ],
-                  ))
+                      ))
                 ],
               ),
             ),

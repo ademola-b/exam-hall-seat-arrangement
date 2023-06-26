@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:exam_seat_arrangement/main.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:exam_seat_arrangement/utils/defaultText.dart';
 import 'package:flutter/material.dart';
@@ -125,6 +126,7 @@ class _MoreState extends State<More> {
                     title: const DefaultText(size: 15.0, text: "Logout"),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () async {
+                      sharedPreferences.clear();
                       Navigator.pushNamedAndRemoveUntil(
                           context, '/login', (route) => false);
                     },

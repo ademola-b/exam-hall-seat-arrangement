@@ -18,10 +18,13 @@ class Session(models.Model):
         return self.session_title
 
 class Hall(models.Model):
-    hall_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
+    user_id = models.ForeignKey("accounts.User", blank=True, null=True, on_delete=models.SET_NULL)
     hall_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     name = models.CharField(max_length=100, blank=True, null=True)
     seat_no = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.name}"
 
 class AllocateHall(models.Model):
     allocation_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)

@@ -1,3 +1,6 @@
+import 'package:exam_seat_arrangement/main.dart';
+import 'package:exam_seat_arrangement/models/user_response.dart';
+import 'package:exam_seat_arrangement/services/remote_services.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:exam_seat_arrangement/utils/defaultContainer.dart';
 import 'package:exam_seat_arrangement/utils/defaultText.dart';
@@ -14,7 +17,25 @@ class ExamOfficerDashboard extends StatefulWidget {
 }
 
 class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
-  final String _username = "exam officer";
+  String _username = "exam officer";
+  UserDetailsResponse? user;
+
+  _getUser() async {
+    user =
+        await RemoteServices.userResponse(context, sharedPreferences.getString('token'));
+    // return user;
+    setState(() {
+      _username = user!.username;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,7 +56,7 @@ class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
                         children: [
                           DefaultText(
                             size: 20.0,
-                            text: "Hello, \n ${_username.titleCase()}",
+                            text: "Hello, \n ${_username.toTitleCase()}",
                             // text: "Hello, \n ${username!.titleCase()}",
                             color: Constants.primaryColor,
                           ),

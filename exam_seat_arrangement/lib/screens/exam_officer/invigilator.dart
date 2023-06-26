@@ -41,7 +41,7 @@ class _InvigilatorState extends State<Invigilator> {
                           color: Constants.backgroundColor),
                       iconSize: 30,
                     ),
-                    DefaultText(
+                    const DefaultText(
                       text: "Add Invigilator",
                       size: 30.0,
                       color: Constants.primaryColor,
@@ -64,22 +64,39 @@ class _InvigilatorState extends State<Invigilator> {
                                   text: "Select File",
                                   textSize: 20.0),
                             ),
-                            SizedBox(
-                              width: size.width / 2.5,
-                              child: DefaultButton(
-                                  onPressed: () {
-                                    _isDisabled ? null : print("object");
-                                  },
-                                  text: "Upload File",
-                                  textSize: 20.0),
-                            ),
+                            _isDisabled
+                                ? SizedBox(
+                                    width: size.width / 2.5,
+                                    child: DefaultButton(
+                                        color: Colors.grey,
+                                        onPressed: () {
+                                          _isDisabled ? null : print("");
+                                        },
+                                        text: "Upload File",
+                                        textSize: 20.0),
+                                  )
+                                : SizedBox(
+                                    width: size.width / 2.5,
+                                    child: DefaultButton(
+                                        color: Constants.primaryColor,
+                                        onPressed: () {
+                                          _isDisabled ? null : print("");
+                                        },
+                                        text: "Upload File",
+                                        textSize: 20.0),
+                                  ),
                           ],
                         ),
                         const SizedBox(height: 5.0),
-                        DefaultText(
-                            text: "$fileSelect",
-                            size: 18.0,
-                            color: Constants.primaryColor)
+                        fileSelect!.startsWith('No')
+                            ? DefaultText(
+                                text: "$fileSelect",
+                                size: 18.0,
+                                color: Constants.pillColor)
+                            : DefaultText(
+                                text: "$fileSelect",
+                                size: 18.0,
+                                color: Constants.primaryColor)
                       ],
                     ),
                   ),
