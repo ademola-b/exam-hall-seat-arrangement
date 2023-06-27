@@ -126,10 +126,15 @@ class _StudentState extends State<Student> {
   }
 
   void _uploadFile() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     await RemoteServices.createStudent(context, data: listOfMap);
     setState(() {
       fileSelect = "File Uploaded";
       _isDisabled = true;
+      _isLoading = false;
     });
   }
 

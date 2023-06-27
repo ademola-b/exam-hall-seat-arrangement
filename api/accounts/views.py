@@ -51,14 +51,12 @@ class InvigilatorCreateView(CreateAPIView):
             print(f'invigilator: {invigilator_data}')
 
             for data in invigilator_data:
-                # print(f'data:{data}')
                 user = User.objects.create(name = data['user_id']['name'],
                                     username = data['user_id']['username'],
                                     dept_id = Department.objects.get(dept_id = data['user_id']['dept_id']),
                                     password = make_password(default_password),
-                                    is_student = True, 
+                                    is_invigilator = True, 
                                     is_active=True)
-                print(f'user: {user.name}')
                 Invigilator.objects.create(user_id = user, phone = data['phone'])
 
             return Response(invigilator_serializer.data, status=status.HTTP_201_CREATED)

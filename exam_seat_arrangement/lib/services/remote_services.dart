@@ -4,6 +4,7 @@ import 'package:exam_seat_arrangement/main.dart';
 import 'package:exam_seat_arrangement/models/create_hall_response.dart';
 import 'package:exam_seat_arrangement/models/invigilator_response.dart';
 import 'package:exam_seat_arrangement/models/login_response.dart';
+import 'package:exam_seat_arrangement/models/seat_arrangement_view_response.dart';
 import 'package:exam_seat_arrangement/models/student_response.dart';
 import 'package:exam_seat_arrangement/models/user_response.dart';
 import 'package:exam_seat_arrangement/services/urls.dart';
@@ -188,5 +189,24 @@ class RemoteServices {
           Constants.snackBar(context, "An error occurred: $e", false));
     }
     return null;
+  }
+
+  static Future<List<SeatArrangementViewResponse?>?> viewSeatArrangement(
+      context, String? date) async {
+    try {
+      Response response = await http.get(
+          Uri.parse("$baseUrl/api/exam-seat/seat-arrangement/$date/"),
+          headers: <String, String>{
+            'content-type': 'application/json; charset=UTF-8',
+            'Authorization': "Token ${sharedPreferences.getString("token")}"
+          });
+      if (response.statusCode == 200) {
+        return seatArrangementViewResponseFromJson(response.body);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
+    return [];
   }
 }

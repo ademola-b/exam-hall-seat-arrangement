@@ -6,4 +6,5 @@ Uri userUrl = Uri.parse("$baseUrl/api/accounts/user/");
 Uri addStudentUrl = Uri.parse("$baseUrl/api/accounts/add-student/");
 Uri addInvigilatorUrl = Uri.parse("$baseUrl/api/accounts/add-invigilator/");
 Uri addHallUrl = Uri.parse("$baseUrl/api/exam-seat/add-hall/");
+Uri seatArrangementUrl = Uri.parse("$baseUrl/api/exam-seat/seat-arrangement/2023-03-02/");
 

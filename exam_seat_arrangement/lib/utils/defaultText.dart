@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DefaultText extends StatelessWidget {
   final double? size;
-  final String text;
+  final String? text;
   final FontWeight? weight;
   final Color? color;
   final TextAlign? align;
@@ -18,7 +18,7 @@ class DefaultText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      text,
+      text!,
       textAlign: align,
       style: TextStyle(
         color: color,

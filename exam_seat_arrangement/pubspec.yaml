@@ -45,6 +45,7 @@ dependencies:
   csv: ^5.0.1
   path_provider: ^2.0.10
   open_file: ^3.2.1
+  flutter_svg: ^1.1.6
   
 
 dev_dependencies:
