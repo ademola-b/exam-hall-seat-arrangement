@@ -24,6 +24,8 @@ class _DashboardState extends State<Dashboard> {
   String _username = "user";
   bool userType = false;
 
+  String today = DateFormat('yyyy-mm-dd').format(DateTime.now());
+
   _getUser() async {
     UserDetailsResponse? user = await RemoteServices.userResponse(
         context, sharedPreferences.getString('token'));
@@ -34,7 +36,6 @@ class _DashboardState extends State<Dashboard> {
         _username = user.username;
       });
     }
-    print(userType);
   }
 
   @override
@@ -51,8 +52,7 @@ class _DashboardState extends State<Dashboard> {
         backgroundColor: Constants.backgroundColor,
         body: SingleChildScrollView(
           child: RefreshIndicator(
-            onRefresh: () =>
-                RemoteServices.viewSeatArrangement(context, "2023-06-27"),
+            onRefresh: () => RemoteServices.viewSeatArrangement(context, today),
             child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 40.0),
