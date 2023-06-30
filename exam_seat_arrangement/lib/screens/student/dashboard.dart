@@ -1,5 +1,4 @@
 import 'package:exam_seat_arrangement/main.dart';
-import 'package:exam_seat_arrangement/models/seat_arrangement_view_response.dart';
 import 'package:exam_seat_arrangement/models/user_response.dart';
 import 'package:exam_seat_arrangement/services/remote_services.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
@@ -93,7 +92,7 @@ class _DashboardState extends State<Dashboard> {
                               align: TextAlign.center,
                             )
                           : DefaultText(
-                              text: "hall allocation and seat no for today"
+                              text: "hall allocation and seat no. for today"
                                   .toUpperCase(),
                               size: 22.0,
                               color: Constants.splashBackColor,

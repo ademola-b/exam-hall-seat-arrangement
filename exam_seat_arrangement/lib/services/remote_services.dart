@@ -1,15 +1,16 @@
 import 'dart:convert';
 
 import 'package:exam_seat_arrangement/main.dart';
+import 'package:exam_seat_arrangement/models/courses_responses.dart';
 import 'package:exam_seat_arrangement/models/create_hall_response.dart';
+import 'package:exam_seat_arrangement/models/halls_response.dart';
 import 'package:exam_seat_arrangement/models/invigilator_response.dart';
 import 'package:exam_seat_arrangement/models/login_response.dart';
-import 'package:exam_seat_arrangement/models/seat_arrangement_view_response.dart';
+import 'package:exam_seat_arrangement/models/seat_arrangement_response.dart';
 import 'package:exam_seat_arrangement/models/student_response.dart';
 import 'package:exam_seat_arrangement/models/user_response.dart';
 import 'package:exam_seat_arrangement/services/urls.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
-import 'package:exam_seat_arrangement/utils/defaultText.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -34,8 +35,9 @@ class RemoteServices {
   static Future<LoginResponse?> login(
       context, String username, String password) async {
     try {
-      Response response = await http
-          .post(loginUrl, body: {'username': username, 'password': password});
+      var response = await http.post(
+          Uri.parse("http://192.168.200.182:8000/api/accounts/login/"),
+          body: {'username': username, 'password': password});
 
       var responseData = jsonDecode(response.body);
       if (responseData != null) {
@@ -191,7 +193,7 @@ class RemoteServices {
     return null;
   }
 
-  static Future<List<SeatArrangementViewResponse?>?> viewSeatArrangement(
+  static Future<List<SeatArrangementResponse?>?> viewSeatArrangement(
       context, String? date) async {
     try {
       Response response = await http.get(
@@ -201,7 +203,90 @@ class RemoteServices {
             'Authorization': "Token ${sharedPreferences.getString("token")}"
           });
       if (response.statusCode == 200) {
-        return seatArrangementViewResponseFromJson(response.body);
+        return seatArrangementResponseFromJson(response.body);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
+    return [];
+  }
+
+  static Future<List<SeatArrangementResponse>?>? seatArrangementForExamOfficer(
+      context, String? date, String? hall_id, String course_id) async {
+    try {
+      Response response = await http.get(
+          Uri.parse(
+              "$baseUrl/api/exam-seat/seat-arrangement/$date/$hall_id/$course_id/"),
+          headers: <String, String>{
+            'content-type': 'application/json; charset=UTF-8',
+            'Authorization': "Token ${sharedPreferences.getString("token")}"
+          });
+      if (response.statusCode == 200) {
+        return seatArrangementResponseFromJson(response.body);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
+
+    return null;
+  }
+
+  static Future<List<HallsResponse>?>? halls(context) async {
+    try {
+      Response response = await http.get(hallsUrl, headers: <String, String>{
+        'content-type': 'application/json; charset=UTF-8',
+        "Authorization": "Token ${sharedPreferences.getString("token")}"
+      });
+      if (response.statusCode == 200) {
+        return hallsResponseFromJson(response.body);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
+    return [];
+  }
+
+  static Future<List<HallsResponse>?>? hallsWithId(context, String id) async {
+    try {
+      Response response = await http.get(
+          Uri.parse("$baseUrl/api/exam-seat/halls/$id/"),
+          headers: <String, String>{
+            'content-type': 'application/json; charset=UTF-8',
+            "Authorization": "Token ${sharedPreferences.getString("token")}"
+          });
+      if (response.statusCode == 200) {
+        return hallsResponseFromJson(response.body);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
+    return [];
+  }
+
+  static Future<List<CoursesResponse>?>? courses(context) async {
+    try {
+      Response response = await http.get(coursesUrl);
+      if (response.statusCode == 200) {
+        return coursesResponseFromJson(response.body);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
+    return [];
+  }
+
+  static Future<List<CoursesResponse>?>? courseWithId(
+      context, String id) async {
+    try {
+      Response response =
+          await http.get(Uri.parse("$baseUrl/api/exam-seat/courses/$id/"));
+      if (response.statusCode == 200) {
+        return coursesResponseFromJson(response.body);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

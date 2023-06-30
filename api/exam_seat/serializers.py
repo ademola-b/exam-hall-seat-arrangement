@@ -1,7 +1,12 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from accounts.serializers import StudentSerializer
-from exam_seat.models import Hall, SeatArrangement, AllocateHall
+from exam_seat.models import Course, Hall, SeatArrangement, AllocateHall
+
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = "__all__"
 
 class HallSerializer(serializers.ModelSerializer):
     name = serializers.CharField(validators = [UniqueValidator(queryset=Hall.objects.all(), message="Hall Already Exists")])
@@ -20,7 +25,7 @@ class AllocationSerializer(serializers.ModelSerializer):
         fields = [
             "allocation_id",
             "date",
-            "semester",
+            "course",
             "hall_id",
             "no_seat",
             "level",
@@ -30,7 +35,7 @@ class AllocationSerializer(serializers.ModelSerializer):
 
 class SeatArrangementSerializer(serializers.ModelSerializer):
     allocation_id = AllocationSerializer()
-    # student_id = StudentSerializer()
+    student_id = StudentSerializer()
     class Meta:
         model = SeatArrangement
         fields = [

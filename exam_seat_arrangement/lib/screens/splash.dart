@@ -11,6 +11,8 @@ import 'package:flutter/src/widgets/framework.dart';
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
+  // get the nextscreen
+
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(

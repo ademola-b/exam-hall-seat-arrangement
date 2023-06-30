@@ -74,6 +74,27 @@ class Constants {
             ));
   }
 
+  static pickDate(context, DateTime pickedDate) async {
+    var picked = await showDatePicker(
+      context: context,
+      initialDate: pickedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+            data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(
+                    primary: Constants.primaryColor,
+                    onPrimary: Constants.splashBackColor,
+                    onSurface: Constants.pillColor)),
+            child: child!);
+      },
+    );
+
+    return picked;
+
+  }
+
 
   
 }

@@ -8,8 +8,18 @@ class Department(models.Model):
     dept_name = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.dept_name 
+        return self.dept_name
     
+class Course(models.Model):
+    course_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
+    dept_id = models.ForeignKey(Department, on_delete=models.CASCADE, blank=True, null=True)
+    course_title = models.CharField(max_length=7)
+    course_desc = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.course_title} - {self.course_desc}"
+
+
 class Session(models.Model):
     session_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     session_title = models.CharField(max_length=50, blank=True, null=True)
@@ -29,11 +39,15 @@ class Hall(models.Model):
 class AllocateHall(models.Model):
     allocation_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     date = models.DateTimeField()
-    semester = models.CharField(max_length=4, choices=[('1', '1st'),('2', '2nd'),('3', '3rd'),('4', '4th')])
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     hall_id = models.ForeignKey(Hall, on_delete=models.CASCADE)
     no_seat = models.IntegerField(blank=True, null=True)
     level = models.CharField(max_length=10, choices=[('1', 'ND I'), ('2', 'ND II'),('3', 'HND I'),('4', 'HND II'),])
     invigilator = models.ForeignKey("accounts.Invigilator", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.date} - {self.hall_id.name}"
+    
 
 class SeatArrangement(models.Model):
     seat_arrangement_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
