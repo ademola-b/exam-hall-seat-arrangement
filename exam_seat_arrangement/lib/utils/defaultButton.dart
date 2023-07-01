@@ -9,6 +9,7 @@ class DefaultButton extends StatelessWidget {
   final FontWeight? textWeight;
   final Size? size;
   Color? color;
+  Color? textColor;
 
   DefaultButton(
       {Key? key,
@@ -16,6 +17,7 @@ class DefaultButton extends StatelessWidget {
       required this.text,
       required this.textSize,
       this.color = Constants.primaryColor,
+      this.textColor,
       this.textWeight,
       this.size})
       : super(key: key);
@@ -36,6 +38,7 @@ class DefaultButton extends StatelessWidget {
         onPressed();
       },
       child: DefaultText(
+        color: textColor,
         size: textSize,
         text: text,
         weight: textWeight,

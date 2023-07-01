@@ -27,11 +27,14 @@ class AllocationSerializer(serializers.ModelSerializer):
             "date",
             "course",
             "hall_id",
-            "no_seat",
             "level",
             "invigilator"
         ]
 
+class AllocateHallSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AllocateHall
+        fields = "__all__"
 
 class SeatArrangementSerializer(serializers.ModelSerializer):
     allocation_id = AllocationSerializer()

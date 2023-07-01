@@ -165,7 +165,7 @@ class _StudentState extends State<Student> {
 
   _getUser() async {
     UserDetailsResponse? user = await RemoteServices.userResponse(
-        context, sharedPreferences.getString('token'));
+        context);
     // return user;
     user != null
         ? setState(() {

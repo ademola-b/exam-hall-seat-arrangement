@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:csv/csv.dart';
 import 'package:exam_seat_arrangement/models/courses_responses.dart';
 import 'package:exam_seat_arrangement/models/halls_response.dart';
+import 'package:exam_seat_arrangement/models/seat_arrangement_response.dart';
 import 'package:exam_seat_arrangement/services/remote_services.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:exam_seat_arrangement/utils/defaultButton.dart';
@@ -19,6 +23,9 @@ class SeatArrangementView extends StatefulWidget {
 class _SeatArrangementViewState extends State<SeatArrangementView> {
   String? _hall_name;
   String? _course_name;
+  List<SeatArrangementResponse> seatResponse = [];
+  String? hall_seats;
+  int? seats_allocated;
 
   _getHallAndCourseName() async {
     List<HallsResponse>? hall = await RemoteServices.hallsWithId(
@@ -37,10 +44,71 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
     }
   }
 
+  Future<void> _exportList() async {
+    if (seatResponse.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "Nothing to export", false));
+    } else {
+      List<List<String>> csvData = [
+        <String>[
+          widget.arguments['date'],
+          _hall_name as String,
+          _course_name as String
+        ],
+        <String>['Name', 'Registration No', 'Seat Number'],
+        ...seatResponse.map((data) => [
+              data.studentId.userId.name,
+              data.studentId.userId.username,
+              data.seatNo.toString()
+            ])
+      ];
+
+      // convert list to csv
+      String csv = const ListToCsvConverter().convert(csvData);
+
+      // set the directory to save file
+      final String dir = await Constants.getDownloadPath(context);
+      final String path =
+          "$dir/seat-arrangement-${widget.arguments['date']}.csv";
+
+      // write file
+      final File file = File(path);
+      await file.writeAsString(csv);
+
+      Constants.dialogBox(context,
+          text: "Hall and Seats Successfully Allocated",
+          color: Colors.white,
+          textColor: Constants.primaryColor,
+          buttonText: "Okay");
+    }
+  }
+
+  _getSeatArrangement() async {
+    List<SeatArrangementResponse>? seatArr =
+        await RemoteServices.seatArrangementForExamOfficer(
+            context,
+            widget.arguments['date'],
+            widget.arguments['hall_id'],
+            widget.arguments['course']);
+    if (seatArr!.isNotEmpty) {
+      setState(() {
+        seatResponse = seatArr;
+        seats_allocated = seatArr.length;
+        hall_seats = seatArr[0].allocationId.hallId.seatNo.toString();
+      });
+    } else {
+      setState(() {
+        seats_allocated = 0;
+        hall_seats = '0';
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _getHallAndCourseName();
+    _getSeatArrangement();
   }
 
   @override
@@ -128,14 +196,14 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                         const SizedBox(height: 10.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: const [
-                            DefaultText(
+                          children: [
+                            const DefaultText(
                               text: "Seats Allocated",
                               size: 18.0,
                               color: Constants.primaryColor,
                             ),
                             DefaultText(
-                              text: "XXXXXXX",
+                              text: "$seats_allocated/$hall_seats",
                               size: 18.0,
                               color: Constants.primaryColor,
                             ),
@@ -152,8 +220,11 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                   children: [
                     SizedBox(
                       child: DefaultButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _exportList();
+                          },
                           text: "Export List",
+                          textColor: Constants.splashBackColor,
                           textSize: 18.0),
                     ),
                   ],
@@ -191,6 +262,7 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                                                 "No Seat Arrangements for the supplied data",
                                             size: 22.0,
                                             color: Constants.pillColor,
+                                            align: TextAlign.center,
                                           )
                                         ],
                                       ),
@@ -209,37 +281,35 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                                       return DefaultContainer(
                                         child: ListTile(
                                           title: DefaultText(
-                                              text: data[index]!
+                                              size: 18.0,
+                                              text: data[index]
                                                   .studentId
                                                   .userId
                                                   .name),
                                           subtitle: DefaultText(
-                                              text: data[index]!
+                                              text: data[index]
                                                   .studentId
                                                   .userId
                                                   .username),
-                                          trailing: ClipOval(
-                                            child: Container(
-                                                color: Constants.pillColor,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      18.0),
-                                                  child: DefaultText(
-                                                    text: data[index]!
-                                                        .seatNo
-                                                        .toString(),
-                                                    size: 15.0,
-                                                    color: Constants
-                                                        .splashBackColor,
-                                                  ),
-                                                )),
+                                          trailing: CircleAvatar(
+                                            radius: 50,
+                                            backgroundColor:
+                                                Constants.pillColor,
+                                            child: DefaultText(
+                                              text:
+                                                  data[index].seatNo.toString(),
+                                              size: 18.0,
+                                              color: Constants.splashBackColor,
+                                            ),
                                           ),
                                         ),
                                       );
                                     });
                               }
 
-                              return const CircularProgressIndicator();
+                              return CircularProgressIndicator(
+                                color: Constants.splashBackColor,
+                              );
                             })
                       ],
                     ),

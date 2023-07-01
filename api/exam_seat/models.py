@@ -40,17 +40,19 @@ class AllocateHall(models.Model):
     allocation_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     date = models.DateTimeField()
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
-    hall_id = models.ForeignKey(Hall, on_delete=models.CASCADE)
-    no_seat = models.IntegerField(blank=True, null=True)
     level = models.CharField(max_length=10, choices=[('1', 'ND I'), ('2', 'ND II'),('3', 'HND I'),('4', 'HND II'),])
     invigilator = models.ForeignKey("accounts.Invigilator", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.date} - {self.hall_id.name}"
+        return f"{self.date} - {self.course.course_desc}"
     
 
 class SeatArrangement(models.Model):
     seat_arrangement_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     allocation_id = models.ForeignKey(AllocateHall, on_delete=models.CASCADE)
+    hall_id = models.ForeignKey(Hall, on_delete=models.CASCADE, null=True, blank=True)
     student_id = models.ForeignKey("accounts.Student", on_delete=models.CASCADE)
     seat_no = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.student_id.user_id.username} allocated to {self.hall_id.name} on seat number {self.seat_no}"

@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import ListCreateAPIView, CreateAPIView
 from rest_framework.response import Response
 
 from . models import User, Student, Invigilator, Department
@@ -39,9 +39,22 @@ class StudentCreateView(CreateAPIView):
             print(f'student_errors: {student_serializer.errors}')
             return Response(student_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class InvigilatorCreateView(CreateAPIView):
+class InvigilatorView(ListCreateAPIView):
     queryset = Invigilator.objects.all()
     serializer_class = InvigilatorSerializer
+
+    def get_queryset(self):
+        qs = self.queryset
+
+        if not self.request.user.is_authenticated:
+            return qs.none()
+        
+        dept = self.request.user.dept_id
+        if self.request.user.is_examofficer:
+            qs = qs.filter(user_id__dept_id = dept)
+            return qs
+        
+        return qs.none()
 
     def post(self, request):
         invigilator_data = request.data

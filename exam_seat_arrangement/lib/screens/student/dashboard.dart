@@ -28,7 +28,7 @@ class _DashboardState extends State<Dashboard> {
 
   _getUser() async {
     UserDetailsResponse? user = await RemoteServices.userResponse(
-        context, sharedPreferences.getString('token'));
+        context);
     // return user;
     if (user != null) {
       setState(() {

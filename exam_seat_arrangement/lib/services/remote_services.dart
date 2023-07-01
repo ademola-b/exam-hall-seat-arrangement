@@ -5,6 +5,7 @@ import 'package:exam_seat_arrangement/models/courses_responses.dart';
 import 'package:exam_seat_arrangement/models/create_hall_response.dart';
 import 'package:exam_seat_arrangement/models/halls_response.dart';
 import 'package:exam_seat_arrangement/models/invigilator_response.dart';
+import 'package:exam_seat_arrangement/models/invigilators_list_response.dart';
 import 'package:exam_seat_arrangement/models/login_response.dart';
 import 'package:exam_seat_arrangement/models/seat_arrangement_response.dart';
 import 'package:exam_seat_arrangement/models/student_response.dart';
@@ -16,11 +17,11 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteServices {
-  static Future<UserDetailsResponse?> userResponse(
-      context, String? token) async {
+  static Future<UserDetailsResponse?> userResponse(context) async {
     try {
-      Response response =
-          await http.get(userUrl, headers: {'Authorization': "Token $token"});
+      Response response = await http.get(userUrl, headers: {
+        'Authorization': "Token ${sharedPreferences.getString('token')}"
+      });
       if (response.statusCode == 200) {
         return userDetailsResponseFromJson(response.body);
       } else {
@@ -44,7 +45,7 @@ class RemoteServices {
         if (responseData['key'] != null) {
           sharedPreferences.setString('token', responseData['key']);
           UserDetailsResponse? user_details =
-              await RemoteServices.userResponse(context, responseData['key']);
+              await RemoteServices.userResponse(context);
           if (user_details != null) {
             if (user_details.isExamofficer) {
               sharedPreferences.setString(
@@ -163,11 +164,27 @@ class RemoteServices {
     return null;
   }
 
+  static Future<List<InvigilatorsListResponse>?>? invigilatorList(context) async {
+    try {
+      Response response =
+          await http.get(invigilatorUrl, headers: <String, String>{
+        'content-type': 'application/json; charset=UTF-8',
+        "Authorization": "Token ${sharedPreferences.getString('token')}"
+      });
+      if (response.statusCode == 200) {
+        return invigilatorsListResponseFromJson(response.body);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(Constants.snackBar(
+            context, "An error occurred: $e", false));
+    }
+  }
+
   static Future<InvigilatorResponse?> createInvigilator(context,
       {List<Map<String, dynamic>>? data}) async {
     try {
       Response response = await http.post(
-        addInvigilatorUrl,
+        invigilatorUrl,
         body: jsonEncode(data),
         headers: <String, String>{
           'content-type': 'application/json; charset=UTF-8',

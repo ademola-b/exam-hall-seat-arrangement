@@ -21,8 +21,8 @@ class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
   UserDetailsResponse? user;
 
   _getUser() async {
-    user =
-        await RemoteServices.userResponse(context, sharedPreferences.getString('token'));
+    user = await RemoteServices.userResponse(
+        context);
     // return user;
     setState(() {
       _username = user!.username;
@@ -95,7 +95,7 @@ class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
                                           icon:
                                               const Icon(Icons.account_balance),
                                           iconSize: 70,
-                                          color: Colors.blue[500],
+                                          color: Constants.backgroundColor,
                                         ),
                                       ),
                                     ),
@@ -148,8 +148,8 @@ class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
                                         color: Constants.primaryColor,
                                         child: Image.asset(
                                           "assets/images/seat.jpg",
-                                          width: 120,
-                                          height: 120,
+                                          width: 100,
+                                          height: 100,
                                         ),
                                       ),
                                     ),

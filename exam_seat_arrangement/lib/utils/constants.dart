@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:exam_seat_arrangement/utils/defaultText.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Constants {
   static final Color backgroundColor = Color(0xFF216865);
   // static final Color altColor = Color(0xFF155451);
-  static  const Color primaryColor = Color(0xFF155451);
+  static const Color primaryColor = Color(0xFF155451);
   static final Color altColor = Color(0xFFd8c6ad);
   static final Color pillColor = Color(0xFFc01414);
   static final Color splashBackColor = Color(0xFFffefd8);
@@ -35,9 +38,13 @@ class Constants {
     );
   }
 
-  static dialogBox(
-      context, {String? text, Color? color, Color? textColor, IconData? icon,
-      String? buttonText, void Function()? buttonAction}) {
+  static dialogBox(context,
+      {String? text,
+      Color? color,
+      Color? textColor,
+      IconData? icon,
+      String? buttonText,
+      void Function()? buttonAction}) {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -64,10 +71,10 @@ class Constants {
               ),
               actions: [
                 TextButton(
-                    onPressed: buttonAction,
+                    onPressed: () => Navigator.pop(context),
                     child: DefaultText(
                       text: "$buttonText",
-                      color: Colors.blue,
+                      color: Constants.backgroundColor,
                       size: 18.0,
                     )),
               ],
@@ -92,9 +99,25 @@ class Constants {
     );
 
     return picked;
-
   }
 
+  static Future<String> getDownloadPath(context) async {
+    Directory? dir;
+    // get the download folder
+    try {
+      Platform.isIOS
+          ? dir = await getApplicationDocumentsDirectory()
+          : dir = Directory('/storage/emulated/0/Download');
+      // check external storage if download is not gotten
+      if (!await dir.exists()) dir = await getExternalStorageDirectory();
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: DefaultText(
+              size: 15.0,
+              text:
+                  "Can't get download folder, check if storage permission is enabled")));
+    }
 
-  
+    return dir!.path;
+  }
 }

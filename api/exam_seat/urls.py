@@ -1,9 +1,10 @@
 from django.urls import path
 from . views import (CourseView, HallView, SeatArrangementView, 
-                     SeatArrangementCreate)
+                     AllocateHallView)
 
 urlpatterns = [
     path('add-hall/', HallView.as_view(), name="Add_Hall"),
+    path('allocate-hall/', AllocateHallView.as_view(), name="Allocate Hall"),
     path('halls/', HallView.as_view(), name="Halls"),
     path('halls/<str:hall_id>/', HallView.as_view(), name="Halls"),
     path('courses/', CourseView.as_view(), name="Courses"),
