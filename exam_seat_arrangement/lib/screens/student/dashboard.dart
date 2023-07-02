@@ -27,8 +27,7 @@ class _DashboardState extends State<Dashboard> {
   String today = DateFormat('yyyy-mm-dd').format(DateTime.now());
 
   _getUser() async {
-    UserDetailsResponse? user = await RemoteServices.userResponse(
-        context);
+    UserDetailsResponse? user = await RemoteServices.userResponse(context);
     // return user;
     if (user != null) {
       setState(() {
@@ -166,10 +165,8 @@ class _DashboardState extends State<Dashboard> {
                                                   color: Constants.primaryColor,
                                                 ),
                                                 DefaultText(
-                                                  text: data[index]!
-                                                      .allocationId
-                                                      .hallId
-                                                      .name,
+                                                  text:
+                                                      data[index]!.hallId.name,
                                                   size: 20.0,
                                                   color: Constants.pillColor,
                                                 ),

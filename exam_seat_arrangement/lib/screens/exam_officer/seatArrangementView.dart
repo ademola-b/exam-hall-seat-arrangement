@@ -90,11 +90,11 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
             widget.arguments['date'],
             widget.arguments['hall_id'],
             widget.arguments['course']);
-    if (seatArr!.isNotEmpty) {
+    if (seatArr != null && seatArr.isNotEmpty) {
       setState(() {
         seatResponse = seatArr;
         seats_allocated = seatArr.length;
-        hall_seats = seatArr[0].allocationId.hallId.seatNo.toString();
+        hall_seats = seatArr[0].hallId.seatNo.toString();
       });
     } else {
       setState(() {
@@ -131,12 +131,14 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                       },
                       icon: Icon(Icons.arrow_back_ios,
                           color: Constants.splashBackColor),
-                      iconSize: 30,
+                      iconSize: 25,
                     ),
-                    DefaultText(
-                      text: "SEAT ARRANGEMENT VIEW",
-                      size: 25.0,
-                      color: Constants.splashBackColor,
+                    Expanded(
+                      child: DefaultText(
+                        text: "SEAT ARRANGEMENT VIEW",
+                        size: 20.0,
+                        color: Constants.splashBackColor,
+                      ),
                     )
                   ],
                 ),

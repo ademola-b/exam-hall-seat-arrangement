@@ -11,12 +11,14 @@ String seatArrangementResponseToJson(List<SeatArrangementResponse> data) => json
 class SeatArrangementResponse {
     String seatArrangementId;
     AllocationId allocationId;
+    HallId hallId;
     StudentId studentId;
     int seatNo;
 
     SeatArrangementResponse({
         required this.seatArrangementId,
         required this.allocationId,
+        required this.hallId,
         required this.studentId,
         required this.seatNo,
     });
@@ -24,6 +26,7 @@ class SeatArrangementResponse {
     factory SeatArrangementResponse.fromJson(Map<String, dynamic> json) => SeatArrangementResponse(
         seatArrangementId: json["seat_arrangement_id"],
         allocationId: AllocationId.fromJson(json["allocation_id"]),
+        hallId: HallId.fromJson(json["hall_id"]),
         studentId: StudentId.fromJson(json["student_id"]),
         seatNo: json["seat_no"],
     );
@@ -31,6 +34,7 @@ class SeatArrangementResponse {
     Map<String, dynamic> toJson() => {
         "seat_arrangement_id": seatArrangementId,
         "allocation_id": allocationId.toJson(),
+        "hall_id": hallId.toJson(),
         "student_id": studentId.toJson(),
         "seat_no": seatNo,
     };
@@ -39,39 +43,31 @@ class SeatArrangementResponse {
 class AllocationId {
     String allocationId;
     DateTime date;
-    String course;
-    HallId hallId;
-    int noSeat;
     String level;
+    String course;
     String invigilator;
 
     AllocationId({
         required this.allocationId,
         required this.date,
-        required this.course,
-        required this.hallId,
-        required this.noSeat,
         required this.level,
+        required this.course,
         required this.invigilator,
     });
 
     factory AllocationId.fromJson(Map<String, dynamic> json) => AllocationId(
         allocationId: json["allocation_id"],
         date: DateTime.parse(json["date"]),
-        course: json["course"],
-        hallId: HallId.fromJson(json["hall_id"]),
-        noSeat: json["no_seat"],
         level: json["level"],
+        course: json["course"],
         invigilator: json["invigilator"],
     );
 
     Map<String, dynamic> toJson() => {
         "allocation_id": allocationId,
         "date": date.toIso8601String(),
-        "course": course,
-        "hall_id": hallId.toJson(),
-        "no_seat": noSeat,
         "level": level,
+        "course": course,
         "invigilator": invigilator,
     };
 }

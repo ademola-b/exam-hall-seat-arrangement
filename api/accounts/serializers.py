@@ -48,6 +48,7 @@ class InvigilatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invigilator
         fields = [
+            'profile_id',
             'user_id',
             'phone'
         ]

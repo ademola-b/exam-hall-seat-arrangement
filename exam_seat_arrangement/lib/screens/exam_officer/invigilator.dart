@@ -166,7 +166,7 @@ class _InvigilatorState extends State<Invigilator> {
       child: Scaffold(
         backgroundColor: Constants.splashBackColor,
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -178,11 +178,11 @@ class _InvigilatorState extends State<Invigilator> {
                       },
                       icon: Icon(Icons.arrow_back_ios,
                           color: Constants.backgroundColor),
-                      iconSize: 30,
+                      iconSize: 25,
                     ),
                     const DefaultText(
                       text: "Add Invigilator",
-                      size: 30.0,
+                      size: 20.0,
                       color: Constants.primaryColor,
                     )
                   ],

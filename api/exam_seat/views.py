@@ -1,7 +1,7 @@
 from random import shuffle
 
 from django.shortcuts import render
-from rest_framework import status
+from rest_framework import status, serializers
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
 from rest_framework.response import Response
 
@@ -93,8 +93,11 @@ class SeatArrangementView(ListAPIView):
                 return qs
             elif user.is_examofficer:
                 if hall and course:
-                    qs = qs.filter(allocation_id__date__date=date, allocation_id__hall_id=hall, allocation_id__course=course)
+                    qs = qs.filter(allocation_id__date__date=date, hall_id=hall, allocation_id__course=course)
                     return qs
+                else:
+                    return qs.filter(allocation_id__date__date=date)
+
                 
 
 def allocate_students_to_halls(num_students, num_halls, hall_cap):
@@ -154,81 +157,89 @@ class AllocateHallView(CreateAPIView):
 
         if allocation_serializer.is_valid():
 
-            # save allocation
-            allocate_hall = AllocateHall.objects.create(
-                date = allocation_data['date'],
-                course = Course.objects.get(course_id = allocation_data['course']),
-                level = allocation_data['level'],
-                invigilator = Invigilator.objects.get(profile_id = allocation_data['invigilator']) 
-            )
-
-            # get hall seat number
-            halls = Hall.objects.filter(user_id = self.request.user)
-
-            # get students in selected level and department
-            students = list(Student.objects.filter(user_id__dept_id=dept, level=allocation_data['level']).values_list('profile_id', flat=True))
-            shuffle(students)
-
-            num_students = len(students)
-            num_halls = len(halls)
-            hall_cap = [hall.seat_no for hall in halls]
-
-            # print(f"hall_cap:{hall_cap}")
-            
-            max_students_per_hall = num_students  // num_halls
-            remaining_students = num_students % num_halls
-
-            sorted_halls = sorted(halls, key=lambda hall: hall.seat_no)
-
-
-            seating_allocation = {hall: [] for hall in sorted_halls}
-
-
-            if num_students > sum(hall_cap):
-                print("Shortage of seats number, get more seats")
-                return None
+            if AllocateHall.objects.filter(date =  allocation_data['date'], level = allocation_data['level'], course_id = allocation_data['course']).exists():
+                return Response({'exists': "Allocation already done on this date and course"}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                remaining_seats = {}
 
-                for hall in sorted_halls:
-                    seats = list(range(1, hall.seat_no + 1))
-                    for _ in range(max_students_per_hall):
-                        if seats:
-                            seating_allocation[hall].append([students.pop(0), seats.pop(0)])
-                            print(f"seatAlloc: {seating_allocation}")
-                            remaining_seats[hall] = seats
+                try:
+                    # get hall seat number
+                    halls = Hall.objects.filter(user_id = self.request.user)
+
+                    # get students in selected level and department
+                    students = list(Student.objects.filter(user_id__dept_id=dept, level=allocation_data['level']).values_list('profile_id', flat=True))
+                    shuffle(students)
+
+                    num_students = len(students)
+                    num_halls = len(halls)
+                    hall_cap = [hall.seat_no for hall in halls]
+
+                    # print(f"hall_cap:{hall_cap}")
+                    max_students_per_hall = num_students  // num_halls
+                    remaining_students = num_students % num_halls
+                    print(f"max_students_per_hall:{max_students_per_hall}")
+
+                    # allocate only if max. stds. per hall is greater than 0
+                    if max_students_per_hall >= 1:
+                        sorted_halls = sorted(halls, key=lambda hall: hall.seat_no)
+                        seating_allocation = {hall: [] for hall in sorted_halls}
+
+                        if num_students > sum(hall_cap):
+                            print()
+                            return Response({"hall_shortage": "Shortage of seats, kindly get more halls"}, status=status.HTTP_400_BAD_REQUEST)
                         else:
-                            break
+                            remaining_seats = {}
+
+                            for hall in sorted_halls:
+                                seats = list(range(1, hall.seat_no + 1))
+                                for _ in range(max_students_per_hall):
+                                    if seats and students:
+                                        seating_allocation[hall].append([students.pop(0), seats.pop(0)])
+                                        print(f"seatAlloc: {seating_allocation}")
+                                        remaining_seats[hall] = seats
+                                    else:
+                                        break
 
 
-                # Distribute any remaining students evenly across the halls
-                for hall in sorted_halls:
-                    print(f"len remaining seat: {len(remaining_seats[hall])}")
-                    print(f"hall_cap: {hall.seat_no}")
-                    print(f"remaining student: {remaining_students}")
+                            # Distribute any remaining students evenly across the halls
+                            for hall in sorted_halls:
+                                print(f"len remaining seat: {len(remaining_seats[hall])}")
+                                print(f"hall_cap: {hall.seat_no}")
+                                print(f"remaining student: {remaining_students}")
 
-                    while len(remaining_seats[hall]) < hall.seat_no and remaining_students > 0:
-                        seat_number = remaining_seats[hall.seats].pop(0)
-                        seating_allocation[hall].append((students.pop(0), seat_number))
-                        remaining_students -=1
+                                while len(remaining_seats[hall]) < hall.seat_no and remaining_students > 0:
+                                    seat_number = remaining_seats[hall.seats].pop(0)
+                                    seating_allocation[hall].append((students.pop(0), seat_number))
+                                    remaining_students -=1
+                    else:
+                        return Response({"zero_max":"Students can't be allocated, kindly use the manual method"}, status=status.HTTP_400_BAD_REQUEST)
 
+                    seating_list = [[hall] + seat for hall, seats in seating_allocation.items() for seat in seats]
+        
+                    print(f"seating_list: {seating_list}")
 
-            seating_list = [[hall] + seat for hall, seats in seating_allocation.items() for seat in seats]
-           
+                    # save allocation
+                    allocate_hall = AllocateHall.objects.create(
+                        date = allocation_data['date'],
+                        course = Course.objects.get(course_id = allocation_data['course']),
+                        level = allocation_data['level'],
+                        invigilator = Invigilator.objects.get(profile_id = allocation_data['invigilator']) 
+                    )
 
-            print(f"seating_list: {seating_list}")
+                    for seatArr in seating_list:
+                        print(f"seatFromList: {seatArr}")
+                        SeatArrangement.objects.create(
+                            allocation_id = allocate_hall,
+                            hall_id = seatArr[0],
+                            student_id = Student.objects.get(profile_id = seatArr[1]),
+                            seat_no = seatArr[2],
+                        )
 
-            for seatArr in seating_list:
-                print(f"seatFromList: {seatArr}")
-                SeatArrangement.objects.create(
-                    allocation_id = allocate_hall,
-                    hall_id = seatArr[0],
-                    student_id = Student.objects.get(profile_id = seatArr[1]),
-                    seat_no = seatArr[2],
-                )
-
-            return Response(data=allocation_serializer.data, status=status.HTTP_201_CREATED)   
+                    return Response(data=allocation_serializer.data, status=status.HTTP_201_CREATED)  
+                except ZeroDivisionError:
+                    return Response({"empty_hall": "No hall to allocate"}, status=status.HTTP_400_BAD_REQUEST)
+                
         else:
+            print(f"Errors: {allocation_serializer.errors}")
             return Response(data=allocation_serializer.errors, status=status.HTTP_400_BAD_REQUEST)       
             
 

@@ -14,3 +14,4 @@ urlpatterns = [
     path('seat-arrangement/<str:date>/<str:hall>/<str:course>/', SeatArrangementView.as_view(), name="Seat Arrangement(Exam Officer)"),
 ]
 
+    

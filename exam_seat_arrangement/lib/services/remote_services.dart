@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:exam_seat_arrangement/main.dart';
+import 'package:exam_seat_arrangement/models/allocate_hall_response.dart';
 import 'package:exam_seat_arrangement/models/courses_responses.dart';
 import 'package:exam_seat_arrangement/models/create_hall_response.dart';
 import 'package:exam_seat_arrangement/models/halls_response.dart';
@@ -36,9 +37,8 @@ class RemoteServices {
   static Future<LoginResponse?> login(
       context, String username, String password) async {
     try {
-      var response = await http.post(
-          Uri.parse("http://192.168.200.182:8000/api/accounts/login/"),
-          body: {'username': username, 'password': password});
+      var response = await http
+          .post(loginUrl, body: {'username': username, 'password': password});
 
       var responseData = jsonDecode(response.body);
       if (responseData != null) {
@@ -164,7 +164,8 @@ class RemoteServices {
     return null;
   }
 
-  static Future<List<InvigilatorsListResponse>?>? invigilatorList(context) async {
+  static Future<List<InvigilatorsListResponse>?>? invigilatorList(
+      context) async {
     try {
       Response response =
           await http.get(invigilatorUrl, headers: <String, String>{
@@ -175,8 +176,8 @@ class RemoteServices {
         return invigilatorsListResponseFromJson(response.body);
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(Constants.snackBar(
-            context, "An error occurred: $e", false));
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
     }
   }
 
@@ -310,5 +311,45 @@ class RemoteServices {
           Constants.snackBar(context, "An error occurred: $e", false));
     }
     return [];
+  }
+
+  static Future<AllocateHallResponse?>? allocateHall(context, String? date,
+      String? level, String? course, String? invigilator) async {
+    try {
+      Response response = await http.post(allocateHallUrl,
+          body: jsonEncode({
+            'date': date,
+            'level': level,
+            'course': course,
+            'invigilator': invigilator
+          }),
+          headers: <String, String>{
+            'content-type': 'application/json; charset=UTF-8',
+            "Authorization": "Token ${sharedPreferences.getString('token')}"
+          });
+      if (response.statusCode == 201) {
+        return allocateHallResponseFromJson(response.body);
+      } else {
+        var responseData = jsonDecode(response.body);
+        print(responseData);
+        if (responseData['exists'] != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              Constants.snackBar(context, "${responseData['exists']}", false));
+        } else if (responseData['zero_max'] != null) {
+          ScaffoldMessenger.of(context).showSnackBar(Constants.snackBar(
+              context, "${responseData['zero_max']}", false));
+        } else if (responseData['empty_hall'] != null) {
+          ScaffoldMessenger.of(context).showSnackBar(Constants.snackBar(
+              context, "${responseData['empty_hall']}", false));
+        } else if (responseData['hall_shortage'] != null) {
+          ScaffoldMessenger.of(context).showSnackBar(Constants.snackBar(
+              context, "${responseData['hall_shortage']}", false));
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
+    return null;
   }
 }

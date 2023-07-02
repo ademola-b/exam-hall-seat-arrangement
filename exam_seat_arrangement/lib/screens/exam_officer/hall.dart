@@ -106,11 +106,7 @@ class _HallState extends State<Hall> {
   void _upload() async {
     // loop through file
     await RemoteServices.createHall(context, data: listOfMaps);
-    // for (var element in listOfMaps) {
-    //   // print(element['name']);
-    //   await RemoteServices.createHall(
-    //       context, element['name'], element['seat_no'].toString());
-    // }
+    Navigator.pop(context);
   }
 
   @override
@@ -120,7 +116,7 @@ class _HallState extends State<Hall> {
       child: Scaffold(
         backgroundColor: Constants.splashBackColor,
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -132,11 +128,11 @@ class _HallState extends State<Hall> {
                       },
                       icon: Icon(Icons.arrow_back_ios,
                           color: Constants.backgroundColor),
-                      iconSize: 30,
+                      iconSize: 25,
                     ),
-                    DefaultText(
+                    const DefaultText(
                       text: "Add Hall",
-                      size: 25.0,
+                      size: 20.0,
                       color: Constants.primaryColor,
                     ),
                   ],

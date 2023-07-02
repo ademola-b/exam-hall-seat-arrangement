@@ -18,18 +18,18 @@ class HallSerializer(serializers.ModelSerializer):
             'seat_no']
 
 
-class AllocationSerializer(serializers.ModelSerializer):
-    hall_id = HallSerializer()
-    class Meta:
-        model = AllocateHall
-        fields = [
-            "allocation_id",
-            "date",
-            "course",
-            "hall_id",
-            "level",
-            "invigilator"
-        ]
+# class AllocationSerializer(serializers.ModelSerializer):
+#     hall_id = HallSerializer()
+#     class Meta:
+#         model = AllocateHall
+#         fields = [
+#             "allocation_id",
+#             "date",
+#             "course",
+#             "hall_id",
+#             "level",
+#             "invigilator"
+#         ]
 
 class AllocateHallSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,13 +37,15 @@ class AllocateHallSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SeatArrangementSerializer(serializers.ModelSerializer):
-    allocation_id = AllocationSerializer()
+    allocation_id = AllocateHallSerializer()
     student_id = StudentSerializer()
+    hall_id = HallSerializer()
     class Meta:
         model = SeatArrangement
         fields = [
             "seat_arrangement_id",
             "allocation_id",
+            "hall_id",
             "student_id",
             "seat_no",
         ]

@@ -31,7 +31,7 @@ class _ExamOfficerNavbarState extends State<ExamOfficerNavbar> {
         textColor: Constants.backgroundColor,
         tabs: [
           TabData(iconData: Icons.home, title: "Home"),
-          TabData(iconData: Icons.people, title: "StudentInvigilator"),
+          TabData(iconData: Icons.people, title: "Add Users"),
           TabData(iconData: Icons.more, title: "More"),
         ],
         initialSelection: 0,

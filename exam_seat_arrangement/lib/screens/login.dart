@@ -103,7 +103,7 @@ class _LoginState extends State<Login> {
                                   onTap: () {
                                     // Navigator.pushNamed(context, '/register');
                                   },
-                                  child: DefaultText(
+                                  child: const DefaultText(
                                     size: 18.0,
                                     color: Constants.primaryColor,
                                     text: "Contact Exam Officer",

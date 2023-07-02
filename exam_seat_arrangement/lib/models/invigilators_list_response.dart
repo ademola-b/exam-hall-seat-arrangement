@@ -9,20 +9,24 @@ List<InvigilatorsListResponse> invigilatorsListResponseFromJson(String str) => L
 String invigilatorsListResponseToJson(List<InvigilatorsListResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class InvigilatorsListResponse {
+    String profileId;
     UserId userId;
     String phone;
 
     InvigilatorsListResponse({
+        required this.profileId,
         required this.userId,
         required this.phone,
     });
 
     factory InvigilatorsListResponse.fromJson(Map<String, dynamic> json) => InvigilatorsListResponse(
+        profileId: json["profile_id"],
         userId: UserId.fromJson(json["user_id"]),
         phone: json["phone"],
     );
 
     Map<String, dynamic> toJson() => {
+        "profile_id": profileId,
         "user_id": userId.toJson(),
         "phone": phone,
     };

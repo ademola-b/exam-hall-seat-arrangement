@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 class StudentInvigilator extends StatefulWidget {
@@ -24,7 +25,7 @@ class _StudentInvigilatorState extends State<StudentInvigilator> {
         body: SingleChildScrollView(
           child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -61,19 +62,14 @@ class _StudentInvigilatorState extends State<StudentInvigilator> {
                                       Navigator.pushNamed(context, '/student'),
                                   child: Column(
                                     children: [
-                                      ClipOval(
-                                        child: Container(
-                                          color: Constants.backgroundColor,
-                                          child: Image.asset(
-                                            "assets/images/student.png",
-                                            width: 100,
-                                            height: 100,
-                                          ),
-                                        ),
+                                      SvgPicture.asset(
+                                        "assets/images/student.svg",
+                                        width: 100,
+                                        height: 100,
                                       ),
-                                      DefaultText(
-                                        text: "Students",
-                                        size: 20.0,
+                                      const DefaultText(
+                                        text: "Add Students",
+                                        size: 18.0,
                                         color: Constants.primaryColor,
                                       )
                                     ],
@@ -85,18 +81,15 @@ class _StudentInvigilatorState extends State<StudentInvigilator> {
                                   child: Column(
                                     children: [
                                       ClipOval(
-                                        child: Container(
-                                          color: Constants.primaryColor,
-                                          child: Image.asset(
-                                            "assets/images/invigilator.png",
-                                            width: 100,
-                                            height: 100,
-                                          ),
+                                        child: SvgPicture.asset(
+                                          "assets/images/invigilator.svg",
+                                          width: 100,
+                                          height: 100,
                                         ),
                                       ),
-                                      DefaultText(
-                                        text: "Invigilator",
-                                        size: 20.0,
+                                      const DefaultText(
+                                        text: "Add Invigilator",
+                                        size: 18.0,
                                         color: Constants.primaryColor,
                                       )
                                     ],

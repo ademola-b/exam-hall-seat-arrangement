@@ -4,9 +4,15 @@ from . models import (
     Hall, AllocateHall, SeatArrangement
 )
 # Register your models here.
+class AllocationModelAdmin(admin.ModelAdmin):
+    list_display = ('date', 'course', 'level', 'invigilator')
+    ordering = ('date',)
+
+admin.site.register(AllocateHall, AllocationModelAdmin)
+
 modelList = [
     Department, Course, Session, Hall,
-    AllocateHall, SeatArrangement
+    SeatArrangement
 ]
 
 for model in modelList:

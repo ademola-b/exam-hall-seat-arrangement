@@ -91,7 +91,7 @@ class _SeatArrangementState extends State<SeatArrangement> {
       child: Scaffold(
         backgroundColor: Constants.splashBackColor,
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -103,11 +103,11 @@ class _SeatArrangementState extends State<SeatArrangement> {
                       },
                       icon: Icon(Icons.arrow_back_ios,
                           color: Constants.backgroundColor),
-                      iconSize: 30,
+                      iconSize: 25,
                     ),
                     const DefaultText(
                       text: "SEAT ARRANGEMENT",
-                      size: 25.0,
+                      size: 20.0,
                       color: Constants.primaryColor,
                     )
                   ],
@@ -124,6 +124,7 @@ class _SeatArrangementState extends State<SeatArrangement> {
                           obscureText: false,
                           fontSize: 20.0,
                           label: "Date",
+                          icon: Icons.date_range,
                           keyboardInputType: TextInputType.none,
                           validator: Constants.validator,
                         ),

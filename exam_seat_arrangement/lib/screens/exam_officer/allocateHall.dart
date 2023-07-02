@@ -1,3 +1,4 @@
+import 'package:exam_seat_arrangement/models/allocate_hall_response.dart';
 import 'package:exam_seat_arrangement/models/courses_responses.dart';
 import 'package:exam_seat_arrangement/models/halls_response.dart';
 import 'package:exam_seat_arrangement/models/invigilators_list_response.dart';
@@ -28,31 +29,54 @@ class _AllocateHallState extends State<AllocateHall> {
   var dropdownvalue1;
   late String _hall, _course, _level, _invigilator;
   final _form = GlobalKey<FormState>();
+  DateTime dateTime = DateTime.now();
+  var dateTimeConv;
 
-  _pickDate() async {
-    DateTime? picked = await Constants.pickDate(context, pickedDate);
-    if (picked != null && picked != pickedDate) {
-      setState(() {
-        pickedDate = picked;
-        _date.text = DateFormat("yyyy-MM-dd").format(pickedDate);
-        // print(formattedDate);
-      });
-    }
-  }
+  AllocateHallResponse? _allocateHall;
 
-  _getHall() async {
-    List<HallsResponse>? halls = await RemoteServices.halls(context);
-    if (halls!.isNotEmpty) {
-      setState(() {
-        for (var hall in halls) {
-          hall_list[hall.hallId] = hall.name;
-        }
-      });
+  _pickDateTime() async {
+    DateTime? pickedDate = await Constants.pickDate(context, dateTime);
+    if (pickedDate == null) return;
+
+    TimeOfDay? pickedTime = await Constants.pickTime(context, dateTime);
+    if (pickedTime == null) return;
+
+    dateTime = DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
+        pickedTime.hour, pickedTime.minute);
+
+    print("datetime: $dateTime");
+
+    var dateTimeConv = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(dateTime);
+    var offset = dateTime.timeZoneOffset;
+    var hours = offset.inHours > 0 ? offset.inHours : 1;
+
+    if (!offset.isNegative) {
+      dateTimeConv =
+          "$dateTimeConv+${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(Constants.snackBar(context, "No Hall", false));
+      dateTimeConv =
+          "$dateTimeConv-${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
     }
+
+    setState(() {
+      // _date.text = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(dateTime);
+      _date.text = dateTimeConv;
+    });
   }
+
+  // _getHall() async {
+  //   List<HallsResponse>? halls = await RemoteServices.halls(context);
+  //   if (halls!.isNotEmpty) {
+  //     setState(() {
+  //       for (var hall in halls) {
+  //         hall_list[hall.hallId] = hall.name;
+  //       }
+  //     });
+  //   } else {
+  //     ScaffoldMessenger.of(context)
+  //         .showSnackBar(Constants.snackBar(context, "No Hall", false));
+  //   }
+  // }
 
   _getCourses() async {
     List<CoursesResponse?>? courses = await RemoteServices.courses(context);
@@ -68,12 +92,12 @@ class _AllocateHallState extends State<AllocateHall> {
     }
   }
 
-  _getInvigilator() async {
+  _getInvigilator(context) async {
     List<InvigilatorsListResponse?>? invigilators =
         await RemoteServices.invigilatorList(context);
     if (invigilators!.isNotEmpty) {
       for (var inv in invigilators) {
-        invigilator_list[inv!.userId.pk] =
+        invigilator_list[inv!.profileId] =
             "${inv.userId.username} - ${inv.userId.name}";
       }
     } else {
@@ -82,19 +106,31 @@ class _AllocateHallState extends State<AllocateHall> {
     }
   }
 
-  allocateHall() {
+  allocateHall(context) async {
     var isValid = _form.currentState!.validate();
     if (!isValid) return;
     _form.currentState!.save();
+
+    AllocateHallResponse? allot = await RemoteServices.allocateHall(
+        context, _date.text, _level, _course, _invigilator.toString());
+    if (allot != null) {
+      await Constants.dialogBox(context,
+          icon: Icons.check_circle_outline,
+          text: "Hall and Seats Successfully Allocated",
+          textColor: Constants.backgroundColor,
+          buttonText: "Okay");
+      Navigator.pop(context);
+    }
+
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getHall();
+    // _getHall();
     _getCourses();
-    _getInvigilator();
+    _getInvigilator(context);
   }
 
   @override
@@ -135,8 +171,9 @@ class _AllocateHallState extends State<AllocateHall> {
                           obscureText: false,
                           fontSize: 20.0,
                           label: "Date",
-                          onTap: _pickDate,
+                          onTap: _pickDateTime,
                           keyboardInputType: TextInputType.none,
+                          validator: Constants.validator,
                         ),
                         const SizedBox(height: 20.0),
                         DefaultDropDown(
@@ -169,40 +206,6 @@ class _AllocateHallState extends State<AllocateHall> {
                           },
                         ),
                         const SizedBox(height: 20.0),
-                        // DefaultDropDown(
-                        //   onChanged: (newVal) {
-                        //     dropdownvalue1 = newVal;
-                        //   },
-                        //   dropdownMenuItemList: hall_list
-                        //       .map((key, value) => MapEntry(
-                        //           key,
-                        //           DropdownMenuItem(
-                        //             value: key,
-                        //             child: DefaultText(
-                        //               text: value.toString(),
-                        //             ),
-                        //           )))
-                        //       .values
-                        //       .toList(),
-                        //   text: "Hall",
-                        //   onSaved: (newVal) {
-                        //     _hall = newVal;
-                        //   },
-                        //   validator: (value) {
-                        //     if (value == null) {
-                        //       return "field is required";
-                        //     }
-                        //     return null;
-                        //   },
-                        // ),
-                        // const SizedBox(height: 20.0),
-                        // const DefaultTextFormField(
-                        //   obscureText: false,
-                        //   fontSize: 20.0,
-                        //   label: "No. of Seats",
-                        //   keyboardInputType: TextInputType.number,
-                        // ),
-                        // const SizedBox(height: 20.0),
                         DefaultDropDown(
                           onChanged: (newVal) {
                             setState(() {
@@ -259,7 +262,7 @@ class _AllocateHallState extends State<AllocateHall> {
                           width: size.width,
                           child: DefaultButton(
                               onPressed: () {
-                                allocateHall();
+                                allocateHall(context);
                               },
                               text: "Allocate Hall",
                               textSize: 20.0),

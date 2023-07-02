@@ -101,6 +101,25 @@ class Constants {
     return picked;
   }
 
+  static pickTime(context, DateTime pickedTime) async {
+    var pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: 00, minute: 00),
+      builder: (context, child) {
+        return Theme(
+            data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(
+                    primary: Constants.primaryColor,
+                    onPrimary: Constants.splashBackColor,
+                    onSurface: Constants.pillColor)),
+            child: child!);
+      },
+    );
+    if (pickedTime != null) {
+      return pickedTime;
+    }
+  }
+
   static Future<String> getDownloadPath(context) async {
     Directory? dir;
     // get the download folder

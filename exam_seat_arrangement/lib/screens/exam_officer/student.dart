@@ -164,8 +164,7 @@ class _StudentState extends State<Student> {
   }
 
   _getUser() async {
-    UserDetailsResponse? user = await RemoteServices.userResponse(
-        context);
+    UserDetailsResponse? user = await RemoteServices.userResponse(context);
     // return user;
     user != null
         ? setState(() {
@@ -189,12 +188,8 @@ class _StudentState extends State<Student> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Constants.splashBackColor,
-        // appBar: AppBar(
-        //   title: const DefaultText(text: "Add Student", size: 18.0),
-        //   centerTitle: true,
-        // ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -206,11 +201,11 @@ class _StudentState extends State<Student> {
                       },
                       icon: Icon(Icons.arrow_back_ios,
                           color: Constants.backgroundColor),
-                      iconSize: 30,
+                      iconSize: 25,
                     ),
                     const DefaultText(
                       text: "Add Student",
-                      size: 30.0,
+                      size: 20.0,
                       color: Constants.primaryColor,
                     )
                   ],
