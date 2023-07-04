@@ -201,13 +201,15 @@ class AllocateHallView(CreateAPIView):
 
                             # Distribute any remaining students evenly across the halls
                             for hall in sorted_halls:
-                                # print(f"len remaining seat: {len(remaining_seats[hall])}")
+                                print(f"remaining seat: {remaining_seats[hall]}")
                                 # print(f"hall_cap: {hall.seat_no}")
-                                # print(f"remaining student: {remaining_students}")
+                                # print(f"remaining student: {remaining_stuWdents}")
 
+                                # seats = list(range(1, remaining_seats[hall] + 1))
+                                # print(seats)
                                 while len(remaining_seats[hall]) < hall.seat_no and remaining_students > 0:
-                                    seat_number = remaining_seats[hall.seats].pop(0)
-                                    seating_allocation[hall].append((students.pop(0), seat_number))
+                                    seat_number = remaining_seats[hall].pop(0)
+                                    seating_allocation[hall].append([students.pop(0), seat_number])
                                     remaining_students -=1
                     else:
                         return Response({"zero_max":"Students can't be allocated, kindly use the manual method"}, status=status.HTTP_400_BAD_REQUEST)

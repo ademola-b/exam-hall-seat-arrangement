@@ -1,11 +1,11 @@
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, CreateAPIView
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
 
 from . models import User, Student, Invigilator, Department
-from . serializers import StudentSerializer, InvigilatorSerializer
+from . serializers import StudentSerializer, InvigilatorSerializer, ChangePasswordSerializer
 
 default_password = '12345678'
 
@@ -76,4 +76,9 @@ class InvigilatorView(ListCreateAPIView):
         else:
             print(f'invigilator_errors: {invigilator_serializer.errors}')
             return Response(invigilator_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ChangePassword(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = ChangePasswordSerializer
+
 

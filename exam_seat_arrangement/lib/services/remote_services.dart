@@ -9,6 +9,7 @@ import 'package:exam_seat_arrangement/models/halls_response.dart';
 import 'package:exam_seat_arrangement/models/invigilator_response.dart';
 import 'package:exam_seat_arrangement/models/invigilators_list_response.dart';
 import 'package:exam_seat_arrangement/models/login_response.dart';
+import 'package:exam_seat_arrangement/models/password_change_response.dart';
 import 'package:exam_seat_arrangement/models/seat_arrangement_response.dart';
 import 'package:exam_seat_arrangement/models/student_response.dart';
 import 'package:exam_seat_arrangement/models/user_response.dart';
@@ -389,7 +390,6 @@ class RemoteServices {
       Response response = await http
           .delete(Uri.parse("$baseUrl/api/exam-seat/allocations/modify/$id/"));
       if (response.statusCode == 200) {
-        
         var responseData = jsonDecode(response.body);
         if (responseData['delete'] != null) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -400,5 +400,57 @@ class RemoteServices {
       ScaffoldMessenger.of(context).showSnackBar(
           Constants.snackBar(context, "An error occurred: $e", false));
     }
+  }
+
+  static Future<PasswordChangeResponse?> passwordChange(
+      context, String? oldPass, String? newPass, String? conPass) async {
+    try {
+      Response response = await http.post(passwordChangeUrl,
+          headers: <String, String>{
+            "content-type": "application/json; charset=UTF-8",
+            "Authorization": "Token ${sharedPreferences.getString('token')}"
+          },
+          body: jsonEncode({
+            'old_password': oldPass,
+            'new_password1': newPass,
+            'new_password2': conPass,
+          }));
+      var responseData = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        if (responseData['detail'] != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              Constants.snackBar(context, "${responseData['detail']}", true));
+        }
+        Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+      } else {
+        if (responseData['new_password1'] != null) {
+          String output = '';
+          for (var element in responseData['new_password1']) {
+            output += element + "\n";
+          }
+          ScaffoldMessenger.of(context)
+              .showSnackBar(Constants.snackBar(context, output, false));
+        } else if (responseData['new_password2'] != null) {
+          String output = '';
+          for (var element in responseData['new_password2']) {
+            output += element + "\n";
+          }
+          ScaffoldMessenger.of(context)
+              .showSnackBar(Constants.snackBar(context, output, false));
+        } else if (responseData['old_password'] != null) {
+          String output = '';
+          for (var element in responseData['old_password']) {
+            output += element + "\n";
+          }
+          ScaffoldMessenger.of(context)
+              .showSnackBar(Constants.snackBar(context, output, false));
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", true));
+    }
+
+    return null;
   }
 }

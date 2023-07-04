@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:exam_seat_arrangement/main.dart';
+import 'package:exam_seat_arrangement/services/remote_services.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:exam_seat_arrangement/utils/defaultText.dart';
 import 'package:flutter/material.dart';
@@ -66,17 +67,32 @@ class _MoreState extends State<More> {
                           ),
                         ),
                       ),
-                      DefaultText(
-                        size: 25.0,
-                        text: "Name",
-                        weight: FontWeight.bold,
-                        color: Constants.splashBackColor,
-                      ),
-                      DefaultText(
-                          size: 18.0,
-                          text: "registration number",
-                          color: Constants.splashBackColor,
-                          weight: FontWeight.bold),
+                      FutureBuilder(
+                          future: RemoteServices.userResponse(context),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Column(
+                                children: [
+                                  DefaultText(
+                                    size: 25.0,
+                                    text: snapshot.data!.name,
+                                    weight: FontWeight.bold,
+                                    color: Constants.splashBackColor,
+                                  ),
+                                  DefaultText(
+                                      size: 18.0,
+                                      text:
+                                          snapshot.data!.username.toLowerCase(),
+                                      color: Constants.splashBackColor,
+                                      weight: FontWeight.bold),
+                                ],
+                              );
+                            }
+
+                            return CircularProgressIndicator(
+                              color: Constants.splashBackColor,
+                            );
+                          })
                     ],
                   ),
                 ),

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from dj_rest_auth.serializers import UserDetailsSerializer
+from dj_rest_auth.serializers import UserDetailsSerializer, PasswordChangeSerializer
 from . models import (User, Student, 
                       Invigilator, Department)
 
@@ -29,6 +29,10 @@ class UserDetailsSerializer(UserDetailsSerializer):
             'is_invigilator'
         ]
         read_only_fields = ('is_staff', 'is_examofficer', 'is_student', 'is_invigilator')
+
+class ChangePasswordSerializer(PasswordChangeSerializer):
+    old_password = serializers.CharField(required=True)
+
 
 class StudentSerializer(serializers.ModelSerializer):
 

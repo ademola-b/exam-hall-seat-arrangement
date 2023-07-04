@@ -11,6 +11,7 @@ import 'package:exam_seat_arrangement/screens/exam_officer/update_allocation.dar
 import 'package:exam_seat_arrangement/screens/login.dart';
 import 'package:exam_seat_arrangement/screens/splash.dart';
 import 'package:exam_seat_arrangement/screens/student/bottomNavbar.dart';
+import 'package:exam_seat_arrangement/screens/student/change_password.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,6 +63,11 @@ Route<dynamic> getRoutes(RouteSettings settings) {
 
     case '/invigilator':
       return _buildRoute(settings, const Invigilator());
+
+  
+    case '/changePassword':
+      return _buildRoute(settings, const ChangePassword());
+
 
     default:
       return _buildRoute(settings, const SplashScreen());

@@ -171,7 +171,7 @@ class _HallState extends State<Hall> {
                                     child: DefaultButton(
                                         color: Constants.primaryColor,
                                         onPressed: () {
-                                          _isDisabled ? null : print("");
+                                          _isDisabled ? null : _upload();
                                         },
                                         text: "Upload File",
                                         textSize: 20.0),

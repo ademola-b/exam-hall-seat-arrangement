@@ -13,7 +13,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool _obscureText = false;
+  bool _obscureText = true;
   final _form = GlobalKey<FormState>();
   late String _username;
   late String _password;
@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
                         children: [
                           DefaultTextFormField(
                             label: "Username",
-                            obscureText: _obscureText,
+                            obscureText: false,
                             fontSize: 20.0,
                             icon: Icons.person,
                             onSaved: (value) => _username = value!,

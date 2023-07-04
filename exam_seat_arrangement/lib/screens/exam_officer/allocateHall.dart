@@ -30,7 +30,7 @@ class _AllocateHallState extends State<AllocateHall> {
   late String _hall, _course, _level, _invigilator;
   final _form = GlobalKey<FormState>();
   DateTime dateTime = DateTime.now();
-  var dateTimeConv;
+  var dateTimeConv, pickedDateTime;
 
   AllocateHallResponse? _allocateHall;
 
@@ -50,18 +50,22 @@ class _AllocateHallState extends State<AllocateHall> {
     var offset = dateTime.timeZoneOffset;
     var hours = offset.inHours > 0 ? offset.inHours : 1;
 
-    if (!offset.isNegative) {
-      dateTimeConv =
-          "$dateTimeConv+${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
-    } else {
-      dateTimeConv =
-          "$dateTimeConv-${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
-    }
-
     setState(() {
+      if (!offset.isNegative) {
+        dateTimeConv =
+            "$dateTimeConv+${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
+      } else {
+        dateTimeConv =
+            "$dateTimeConv-${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
+      }
       // _date.text = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(dateTime);
-      _date.text = dateTimeConv;
+      // _date.text = dateTimeConv;
+      var date = DateFormat.yMEd().format(dateTime);
+      var time = DateFormat.jm().format(dateTime);
+      _date.text = "$date, $time";
+      pickedDateTime = dateTimeConv;
     });
+    // setState(() {});
   }
 
   // _getHall() async {
@@ -107,12 +111,13 @@ class _AllocateHallState extends State<AllocateHall> {
   }
 
   allocateHall(context) async {
+    print("date:$pickedDateTime");
     var isValid = _form.currentState!.validate();
     if (!isValid) return;
     _form.currentState!.save();
 
     AllocateHallResponse? allot = await RemoteServices.allocateHall(
-        context, _date.text, _level, _course, _invigilator.toString());
+        context, pickedDateTime, _level, _course, _invigilator.toString());
     if (allot != null) {
       await Constants.dialogBox(
         context,
