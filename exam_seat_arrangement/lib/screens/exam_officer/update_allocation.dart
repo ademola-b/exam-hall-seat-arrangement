@@ -11,14 +11,14 @@ import 'package:exam_seat_arrangement/utils/defaultTextFormField.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class AllocateHall extends StatefulWidget {
-  const AllocateHall({super.key});
+class UpdateAllocation extends StatefulWidget {
+  const UpdateAllocation({super.key});
 
   @override
-  State<AllocateHall> createState() => _AllocateHallState();
+  State<UpdateAllocation> createState() => _UpdateAllocationState();
 }
 
-class _AllocateHallState extends State<AllocateHall> {
+class _UpdateAllocationState extends State<UpdateAllocation> {
   Map hall_list = {};
   Map course_list = {};
   Map level = {'1': 'ND I', '2': 'ND II', '3': 'HND I', '4': 'HND II'};
@@ -64,21 +64,7 @@ class _AllocateHallState extends State<AllocateHall> {
     });
   }
 
-  // _getHall() async {
-  //   List<HallsResponse>? halls = await RemoteServices.halls(context);
-  //   if (halls!.isNotEmpty) {
-  //     setState(() {
-  //       for (var hall in halls) {
-  //         hall_list[hall.hallId] = hall.name;
-  //       }
-  //     });
-  //   } else {
-  //     ScaffoldMessenger.of(context)
-  //         .showSnackBar(Constants.snackBar(context, "No Hall", false));
-  //   }
-  // }
-
-  _getCourses() async {
+  _getCourses(context) async {
     List<CoursesResponse?>? courses = await RemoteServices.courses(context);
     if (courses!.isNotEmpty) {
       setState(() {
@@ -140,7 +126,7 @@ class _AllocateHallState extends State<AllocateHall> {
     // TODO: implement initState
     super.initState();
     // _getHall();
-    _getCourses();
+    _getCourses(context);
     _getInvigilator(context);
   }
 
@@ -166,7 +152,7 @@ class _AllocateHallState extends State<AllocateHall> {
                       iconSize: 25,
                     ),
                     const DefaultText(
-                      text: "Allocate Hall",
+                      text: "Update Allocation",
                       size: 20.0,
                       color: Constants.primaryColor,
                     )
@@ -276,7 +262,7 @@ class _AllocateHallState extends State<AllocateHall> {
                               onPressed: () {
                                 allocateHall(context);
                               },
-                              text: "Allocate Hall",
+                              text: "Update",
                               textSize: 20.0),
                         )
                       ],

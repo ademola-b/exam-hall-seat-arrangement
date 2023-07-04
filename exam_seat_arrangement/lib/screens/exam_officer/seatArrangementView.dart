@@ -218,8 +218,15 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                 ),
                 const SizedBox(height: 40.0),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    SizedBox(
+                      child: DefaultButton(
+                          onPressed: () {},
+                          text: "Shuffle List",
+                          textColor: Constants.splashBackColor,
+                          textSize: 18.0),
+                    ),
                     SizedBox(
                       child: DefaultButton(
                           onPressed: () {

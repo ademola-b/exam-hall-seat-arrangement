@@ -82,7 +82,6 @@ class RemoteServices {
 
   static Future<AddHallResponse?> createHall(context,
       {String? name, String? seat_no, List<Map<String, dynamic>>? data}) async {
-    // context, String? name, String seat_no, List<Map<String, dynamic>>data) async {
     try {
       Response response = await http.post(
         addHallUrl,
@@ -383,5 +382,23 @@ class RemoteServices {
     }
 
     return null;
+  }
+
+  static Future<void> deleteAllocation(context, String? id) async {
+    try {
+      Response response = await http
+          .delete(Uri.parse("$baseUrl/api/exam-seat/allocations/modify/$id/"));
+      if (response.statusCode == 200) {
+        
+        var responseData = jsonDecode(response.body);
+        if (responseData['delete'] != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              Constants.snackBar(context, "${responseData['delete']}", false));
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
   }
 }

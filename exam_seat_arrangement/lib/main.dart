@@ -7,6 +7,7 @@ import 'package:exam_seat_arrangement/screens/exam_officer/save_textField_data.d
 import 'package:exam_seat_arrangement/screens/exam_officer/seatArrangement.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/seatArrangementView.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/student.dart';
+import 'package:exam_seat_arrangement/screens/exam_officer/update_allocation.dart';
 import 'package:exam_seat_arrangement/screens/login.dart';
 import 'package:exam_seat_arrangement/screens/splash.dart';
 import 'package:exam_seat_arrangement/screens/student/bottomNavbar.dart';
@@ -43,7 +44,10 @@ Route<dynamic> getRoutes(RouteSettings settings) {
 
     case '/allocateHall':
       return _buildRoute(settings, const AllocateHall());
-  
+
+    case '/updateAllocation':
+      return _buildRoute(settings, const UpdateAllocation());
+
     case '/allocatedHalls':
       return _buildRoute(settings, const AllocatedHalls());
 

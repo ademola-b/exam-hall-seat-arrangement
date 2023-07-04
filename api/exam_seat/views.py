@@ -2,7 +2,8 @@ from random import shuffle
 
 from django.shortcuts import render
 from rest_framework import status, serializers
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
+from rest_framework.generics import (CreateAPIView, ListAPIView, ListCreateAPIView,
+                                     RetrieveUpdateDestroyAPIView)
 from rest_framework.response import Response
 
 from accounts.models import User, Student, Invigilator
@@ -217,7 +218,7 @@ class AllocateHallView(CreateAPIView):
 
                     # save allocation
                     allocate_hall = AllocateHall.objects.create(
-                        user_id = User.objects.get(user_id = self.request.user),
+                        user_id = User.objects.get(user_id = self.request.user.pk),
                         date = allocation_data['date'],
                         course = Course.objects.get(course_id = allocation_data['course']),
                         level = allocation_data['level'],
@@ -259,8 +260,20 @@ class AllocationsView(ListAPIView):
             else:
                 return self.queryset.filter(user_id=self.request.user)
         
-
-        
         return super().get_queryset()
+    
+class UpdateDeleteAllocationView(RetrieveUpdateDestroyAPIView):
+    queryset = AllocateHall.objects.all()
+    serializer_class = AllocateHallSerializer
+
+    def delete(self, request, *args, **kwargs):
+        allocation_id = self.kwargs.get('pk')
+        AllocateHall.objects.get(allocation_id = allocation_id).delete()
+        seat_arrangements = SeatArrangement.objects.filter(allocation_id = allocation_id)
+        print(f"seats:{seat_arrangements}")
+        # seat_arrangements.delete()
+        if seat_arrangements.delete():
+            return Response({"delete": "Seat Arrangements Deleted"}, status=status.HTTP_200_OK)
+        return super().delete(request, *args, **kwargs)
             
 
