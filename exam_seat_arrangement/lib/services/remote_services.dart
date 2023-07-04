@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:exam_seat_arrangement/main.dart';
 import 'package:exam_seat_arrangement/models/allocate_hall_response.dart';
+import 'package:exam_seat_arrangement/models/allocations_response.dart';
 import 'package:exam_seat_arrangement/models/courses_responses.dart';
 import 'package:exam_seat_arrangement/models/create_hall_response.dart';
 import 'package:exam_seat_arrangement/models/halls_response.dart';
@@ -350,6 +351,37 @@ class RemoteServices {
       ScaffoldMessenger.of(context).showSnackBar(
           Constants.snackBar(context, "An error occurred: $e", false));
     }
+    return null;
+  }
+
+  static Future<List<AllocationsResponse>?>? allocations(context,
+      {String? date}) async {
+    try {
+      if (date == null) {
+        Response response =
+            await http.get(allocationsUrl, headers: <String, String>{
+          "content-type": "application/json; charset=UTF-8",
+          "Authorization": "Token ${sharedPreferences.getString('token')}"
+        });
+        if (response.statusCode == 200) {
+          return allocationsResponseFromJson(response.body);
+        }
+      } else {
+        Response response = await http.get(
+            Uri.parse("$baseUrl/api/exam-seat/allocations/$date/"),
+            headers: <String, String>{
+              "content-type": "application/json; charset=UTF-8",
+              "Authorization": "Token ${sharedPreferences.getString('token')}"
+            });
+        if (response.statusCode == 200) {
+          return allocationsResponseFromJson(response.body);
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
+
     return null;
   }
 }

@@ -44,6 +44,7 @@ class Constants {
       Color? textColor,
       IconData? icon,
       String? buttonText,
+      List<Widget>? actions,
       void Function()? buttonAction}) {
     return showDialog(
         context: context,
@@ -69,15 +70,7 @@ class Constants {
                   ],
                 ),
               ),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: DefaultText(
-                      text: "$buttonText",
-                      color: Constants.backgroundColor,
-                      size: 18.0,
-                    )),
-              ],
+              actions: actions,
             ));
   }
 

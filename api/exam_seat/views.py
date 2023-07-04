@@ -5,11 +5,11 @@ from rest_framework import status, serializers
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
 from rest_framework.response import Response
 
-from accounts.models import Student, Invigilator
+from accounts.models import User, Student, Invigilator
 
 from . models import Hall, SeatArrangement, Course, AllocateHall
 from . serializers import (HallSerializer, SeatArrangementSerializer, 
-                           CourseSerializer, AllocateHallSerializer)
+                           CourseSerializer, AllocateHallSerializer, AllocationsSerializer)
 # Create your views here.
 class HallView(ListCreateAPIView):
     queryset = Hall.objects.all()
@@ -143,7 +143,6 @@ def allocate_students_to_halls(num_students, num_halls, hall_cap):
         
         return seating_allocation
 
-
 class AllocateHallView(CreateAPIView):
     queryset = AllocateHall.objects.all()
     serializer_class = AllocateHallSerializer
@@ -176,7 +175,7 @@ class AllocateHallView(CreateAPIView):
                     # print(f"hall_cap:{hall_cap}")
                     max_students_per_hall = num_students  // num_halls
                     remaining_students = num_students % num_halls
-                    print(f"max_students_per_hall:{max_students_per_hall}")
+                    # print(f"max_students_per_hall:{max_students_per_hall}")
 
                     # allocate only if max. stds. per hall is greater than 0
                     if max_students_per_hall >= 1:
@@ -184,7 +183,6 @@ class AllocateHallView(CreateAPIView):
                         seating_allocation = {hall: [] for hall in sorted_halls}
 
                         if num_students > sum(hall_cap):
-                            print()
                             return Response({"hall_shortage": "Shortage of seats, kindly get more halls"}, status=status.HTTP_400_BAD_REQUEST)
                         else:
                             remaining_seats = {}
@@ -202,9 +200,9 @@ class AllocateHallView(CreateAPIView):
 
                             # Distribute any remaining students evenly across the halls
                             for hall in sorted_halls:
-                                print(f"len remaining seat: {len(remaining_seats[hall])}")
-                                print(f"hall_cap: {hall.seat_no}")
-                                print(f"remaining student: {remaining_students}")
+                                # print(f"len remaining seat: {len(remaining_seats[hall])}")
+                                # print(f"hall_cap: {hall.seat_no}")
+                                # print(f"remaining student: {remaining_students}")
 
                                 while len(remaining_seats[hall]) < hall.seat_no and remaining_students > 0:
                                     seat_number = remaining_seats[hall.seats].pop(0)
@@ -219,6 +217,7 @@ class AllocateHallView(CreateAPIView):
 
                     # save allocation
                     allocate_hall = AllocateHall.objects.create(
+                        user_id = User.objects.get(user_id = self.request.user),
                         date = allocation_data['date'],
                         course = Course.objects.get(course_id = allocation_data['course']),
                         level = allocation_data['level'],
@@ -240,6 +239,28 @@ class AllocateHallView(CreateAPIView):
                 
         else:
             print(f"Errors: {allocation_serializer.errors}")
-            return Response(data=allocation_serializer.errors, status=status.HTTP_400_BAD_REQUEST)       
+            return Response(data=allocation_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class AllocationsView(ListAPIView):
+    queryset = AllocateHall.objects.all().order_by('date')
+    serializer_class = AllocationsSerializer
+
+    def get_queryset(self):
+
+        date = self.kwargs.get('date')
+
+        if not self.request.user.is_authenticated or not self.request.user.is_examofficer:
+            return self.queryset.none()
+        
+        if self.request.user.is_examofficer:
+            if date:
+                return self.queryset.filter(user_id=self.request.user, date__date=date)
+            else:
+                return self.queryset.filter(user_id=self.request.user)
+        
+
+        
+        return super().get_queryset()
             
 

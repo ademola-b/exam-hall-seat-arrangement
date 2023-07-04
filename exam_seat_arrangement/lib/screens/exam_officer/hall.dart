@@ -41,8 +41,8 @@ class _HallState extends State<Hall> {
     ];
 
     await RemoteServices.createHall(context, data: listOfMaps);
-    // await RemoteServices.createHall(context,
-    //     name: _hallName, seat_no: _seat_no.toString());
+
+    Navigator.pop(context);
   }
 
   void _pickFile() async {
@@ -199,7 +199,7 @@ class _HallState extends State<Hall> {
                       children: [
                         DefaultTextFormField(
                           obscureText: false,
-                          fontSize: 25.0,
+                          fontSize: 20.0,
                           label: "Hall Name",
                           validator: Constants.validator,
                           onSaved: (value) => _hallName = value!,
@@ -208,7 +208,7 @@ class _HallState extends State<Hall> {
                         DefaultTextFormField(
                           // text: _seatNo,
                           obscureText: false,
-                          fontSize: 25.0,
+                          fontSize: 20.0,
                           label: "No. of Seats",
                           validator: Constants.validator,
                           onSaved: (value) => _seat_no = value!,

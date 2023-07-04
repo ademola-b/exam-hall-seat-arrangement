@@ -8,3 +8,4 @@ Uri addHallUrl = Uri.parse("$baseUrl/api/exam-seat/add-hall/");
 Uri hallsUrl = Uri.parse("$baseUrl/api/exam-seat/halls/");
 Uri coursesUrl = Uri.parse("$baseUrl/api/exam-seat/courses/");
 Uri allocateHallUrl = Uri.parse("$baseUrl/api/exam-seat/allocate-hall/");
+Uri allocationsUrl = Uri.parse("$baseUrl/api/exam-seat/allocations/");

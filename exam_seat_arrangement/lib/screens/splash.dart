@@ -1,6 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:exam_seat_arrangement/main.dart';
 import 'package:exam_seat_arrangement/models/user_response.dart';
+import 'package:exam_seat_arrangement/screens/exam_officer/examOfficerNavbar.dart';
 import 'package:exam_seat_arrangement/screens/login.dart';
 import 'package:exam_seat_arrangement/screens/student/bottomNavbar.dart';
 import 'package:exam_seat_arrangement/services/remote_services.dart';
@@ -20,30 +21,60 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   UserDetailsResponse? user;
+  var check_login = 0;
 
   // get the nextscreen
-  checkLogin(context) async {
+  // to be modified to return widget
+  nextScreen(context) async {
     String? token = sharedPreferences.getString('token');
     if (token != null) {
       UserDetailsResponse? user = await RemoteServices.userResponse(context);
       if (user != null) {
-        user.isExamofficer
-            ? Navigator.popAndPushNamed(context, '/examOfficerNavbar')
-            : user!.isInvigilator || user!.isStudent
-                ? Navigator.popAndPushNamed(context, '/bottomNavbar')
-                : Navigator.popAndPushNamed(context, '/login');
+        if (user.isExamofficer) {
+          setState(() {
+            check_login = 1;
+          });
+        } else if (user.isInvigilator || user.isStudent) {
+          setState(() {
+            check_login = 2;
+          });
+        } else {
+          setState(() {
+            check_login = 0;
+          });
+          
+        }
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(Constants.snackBar(context, "Invalid User", false));
       }
     }
+
+    return null;
   }
+
+  // checkLogin(context) async {
+  //   String? token = sharedPreferences.getString('token');
+  //   if (token != null) {
+  //     UserDetailsResponse? user = await RemoteServices.userResponse(context);
+  //     if (user != null) {
+  //       user.isExamofficer
+  //           ? Navigator.popAndPushNamed(context, '/examOfficerNavbar')
+  //           : user.isInvigilator || user.isStudent
+  //               ? Navigator.popAndPushNamed(context, '/bottomNavbar')
+  //               : Navigator.popAndPushNamed(context, '/login');
+  //     } else {
+  //       ScaffoldMessenger.of(context)
+  //           .showSnackBar(Constants.snackBar(context, "Invalid User", false));
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    checkLogin(context);
+    nextScreen(context);
   }
 
   @override
@@ -57,19 +88,15 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Image.asset("assets/images/logo.png",
                     width: 250, height: 250),
               )
-              // SvgPicture.asset("assets/images/logo.svg", width: 50.0, height: 50.0),
-              // const SizedBox(height: 10.0),
-              // const DefaultText(
-              //   text: 'PLACE FINDER',
-              //   size: 40.0,
-              //   color: Colors.white,
-              //   weight: FontWeight.bold,
-              // ),
             ],
           ),
         ),
         backgroundColor: Constants.backgroundColor,
         splashIconSize: 300.0,
-        nextScreen: const Login());
+        nextScreen: check_login == 1
+            ? const ExamOfficerNavbar()
+            : check_login == 2
+                ? const Navbar()
+                : const Login());
   }
 }

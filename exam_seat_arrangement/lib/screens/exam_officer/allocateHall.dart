@@ -121,7 +121,6 @@ class _AllocateHallState extends State<AllocateHall> {
           buttonText: "Okay");
       Navigator.pop(context);
     }
-
   }
 
   @override
@@ -152,11 +151,11 @@ class _AllocateHallState extends State<AllocateHall> {
                       },
                       icon: Icon(Icons.arrow_back_ios,
                           color: Constants.backgroundColor),
-                      iconSize: 30,
+                      iconSize: 25,
                     ),
                     const DefaultText(
                       text: "Allocate Hall",
-                      size: 25.0,
+                      size: 20.0,
                       color: Constants.primaryColor,
                     )
                   ],
@@ -170,6 +169,7 @@ class _AllocateHallState extends State<AllocateHall> {
                           text: _date,
                           obscureText: false,
                           fontSize: 20.0,
+                          icon: Icons.date_range,
                           label: "Date",
                           onTap: _pickDateTime,
                           keyboardInputType: TextInputType.none,

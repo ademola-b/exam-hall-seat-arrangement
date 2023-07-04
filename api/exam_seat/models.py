@@ -19,7 +19,6 @@ class Course(models.Model):
     def __str__(self):
         return f"{self.course_title} - {self.course_desc}"
 
-
 class Session(models.Model):
     session_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     session_title = models.CharField(max_length=50, blank=True, null=True)
@@ -37,6 +36,7 @@ class Hall(models.Model):
         return f"{self.name}"
 
 class AllocateHall(models.Model):
+    user_id = models.ForeignKey("accounts.User", blank=True, null=True, on_delete=models.SET_NULL)
     allocation_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     date = models.DateTimeField()
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)

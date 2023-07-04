@@ -1,4 +1,5 @@
 import 'package:exam_seat_arrangement/screens/exam_officer/allocateHall.dart';
+import 'package:exam_seat_arrangement/screens/exam_officer/allocatedHalls.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/examOfficerNavbar.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/hall.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/invigilator.dart';
@@ -42,6 +43,9 @@ Route<dynamic> getRoutes(RouteSettings settings) {
 
     case '/allocateHall':
       return _buildRoute(settings, const AllocateHall());
+  
+    case '/allocatedHalls':
+      return _buildRoute(settings, const AllocatedHalls());
 
     case '/seatArrangement':
       return _buildRoute(settings, const SeatArrangement());

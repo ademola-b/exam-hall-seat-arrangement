@@ -176,7 +176,7 @@ class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
                               Expanded(
                                 child: GestureDetector(
                                   onTap: () => Navigator.pushNamed(
-                                      context, '/seatArrangement'),
+                                      context, '/allocatedHalls'),
                                   child: Column(
                                     children: [
                                       ClipOval(
@@ -184,8 +184,8 @@ class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
                                           color: Constants.altColor,
                                           child: Padding(
                                             padding: const EdgeInsets.all(5.0),
-                                            child: Image.asset(
-                                              "assets/images/seat.jpg",
+                                            child: SvgPicture.asset(
+                                              "assets/images/circle_chart.svg",
                                               width: 100,
                                               height: 100,
                                             ),
@@ -193,7 +193,7 @@ class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
                                         ),
                                       ),
                                       const DefaultText(
-                                        text: "Allocated Halls",
+                                        text: "Allocations",
                                         size: 18.0,
                                         color: Constants.primaryColor,
                                       )

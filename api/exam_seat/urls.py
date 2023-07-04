@@ -1,9 +1,11 @@
 from django.urls import path
 from . views import (CourseView, HallView, SeatArrangementView, 
-                     AllocateHallView)
+                     AllocateHallView, AllocationsView)
 
 urlpatterns = [
     path('add-hall/', HallView.as_view(), name="Add_Hall"),
+    path('allocations/', AllocationsView.as_view(), name="Allocations"),
+    path('allocations/<str:date>/', AllocationsView.as_view(), name="Allocations"),
     path('allocate-hall/', AllocateHallView.as_view(), name="Allocate Hall"),
     path('halls/', HallView.as_view(), name="Halls"),
     path('halls/<str:hall_id>/', HallView.as_view(), name="Halls"),

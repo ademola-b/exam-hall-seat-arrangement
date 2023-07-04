@@ -60,6 +60,7 @@ class _LoginState extends State<Login> {
                             icon: Icons.person,
                             onSaved: (value) => _username = value!,
                             validator: Constants.validator,
+                            maxLines: 1,
                           ),
                           const SizedBox(height: 25.0),
                           DefaultTextFormField(
@@ -67,6 +68,7 @@ class _LoginState extends State<Login> {
                             obscureText: _obscureText,
                             fontSize: 20.0,
                             icon: Icons.lock,
+                            maxLines: 1,
                             onSaved: (value) => _password = value!,
                             validator: Constants.validator,
                             suffixIcon: GestureDetector(
@@ -97,17 +99,20 @@ class _LoginState extends State<Login> {
                                 size: 18.0,
                                 text: "Having trouble logging in? ",
                                 weight: FontWeight.normal,
+                                align: TextAlign.center,
+                                color: Constants.primaryColor,
                               ),
                               Expanded(
                                 child: GestureDetector(
                                   onTap: () {
                                     // Navigator.pushNamed(context, '/register');
                                   },
-                                  child: const DefaultText(
+                                  child: DefaultText(
                                     size: 18.0,
-                                    color: Constants.primaryColor,
+                                    color: Constants.pillColor,
                                     text: "Contact Exam Officer",
                                     weight: FontWeight.bold,
+                                    align: TextAlign.center,
                                   ),
                                 ),
                               ),
