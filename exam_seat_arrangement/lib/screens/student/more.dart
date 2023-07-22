@@ -42,14 +42,10 @@ class _MoreState extends State<More> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            // appBar: AppBar(
-            //   title: const DefaultText(text: 'PROFILE', size: 22.0),
-            //   centerTitle: true,
-            // ),
             backgroundColor: Constants.backgroundColor,
             body: Padding(
-              padding:
-                  const EdgeInsets.only(top: 50.0, right: 20.0, left: 20.0),
+              padding: const EdgeInsets.only(
+                  top: 50.0, right: 20.0, left: 20.0, bottom: 40.0),
               child: Column(children: [
                 Center(
                   child: Column(
@@ -62,7 +58,7 @@ class _MoreState extends State<More> {
                           border: Border.all(
                               color: Constants.splashBackColor, width: 4.0),
                           image: const DecorationImage(
-                            image: AssetImage("assets/images/logo.png"),
+                            image: AssetImage("assets/images/student.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -81,8 +77,7 @@ class _MoreState extends State<More> {
                                   ),
                                   DefaultText(
                                       size: 18.0,
-                                      text:
-                                          snapshot.data!.username.toLowerCase(),
+                                      text: snapshot.data!.username,
                                       color: Constants.splashBackColor,
                                       weight: FontWeight.bold),
                                 ],

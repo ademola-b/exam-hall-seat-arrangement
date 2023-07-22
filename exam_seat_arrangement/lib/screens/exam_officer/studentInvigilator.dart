@@ -34,14 +34,12 @@ class _StudentInvigilatorState extends State<StudentInvigilator> {
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Spacer(),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
                             DefaultText(
                               size: 20.0,
                               align: TextAlign.center,
-                              text:
-                                  "Date \n ${DateFormat("dd/MM/yyyy").format(DateTime.now())}",
+                              text: "Add Users",
                               color: Constants.primaryColor,
                             ),
                           ],
