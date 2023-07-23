@@ -147,7 +147,7 @@ class _StudentState extends State<Student> {
       {
         "user_id": {
           "name": _name.toUpperCase(),
-          "username": _regNo.toTitleCase(),
+          "username": _regNo.toUpperCase(),
           "dept_id": sharedPreferences.getString("examOfficerDept")
         },
         "level": _level
