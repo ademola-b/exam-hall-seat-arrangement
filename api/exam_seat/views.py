@@ -3,7 +3,7 @@ from random import shuffle
 from django.shortcuts import render
 from rest_framework import status, serializers
 from rest_framework.generics import (CreateAPIView, ListAPIView, ListCreateAPIView,
-                                     RetrieveUpdateDestroyAPIView)
+                                     RetrieveUpdateDestroyAPIView, DestroyAPIView)
 from rest_framework.response import Response
 
 from accounts.models import User, Student, Invigilator
@@ -50,6 +50,26 @@ class HallView(ListCreateAPIView):
         else:
             return Response(hall_serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
+class HallDelete(DestroyAPIView):
+    queryset = Hall.objects.all()
+    serializer_class = HallSerializer
+
+    # def get_queryset(self):
+    #     qs = self.queryset
+    #     if not self.request.user.is_authenticated:
+    #         return Hall.objects.none
+    #     if self.request.user.is_examofficer:
+    #         hall_id = self.kwargs.get('hall_id')
+    #         if hall_id is not None:
+    #             qs = qs.filter(user_id = self.request.user, hall_id = hall_id)
+    #             return qs
+    #         else:
+    #             qs = qs.filter(user_id = self.request.user)
+    #             return qs
+    #     else:
+    #         return Hall.objects.none
+    
+
 class CourseView(ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -60,19 +80,6 @@ class CourseView(ListAPIView):
             return self.queryset.filter(course_id=course_id)
         else:
             return Course.objects.all()
-
-# class SeatArrangementCreate(CreateAPIView):
-#     queryset = SeatArrangement.objects.all()
-#     serializer_class = SeatArrangementSerializer
-
-#     def post(self, request):
-#         seat_arrangement_data = request.data
-#         seat_arrangement_serializer = SeatArrangementSerializer(data = seat_arrangement_data, many=True)
-#         if seat_arrangement_serializer.is_valid():
-#             for data in seat_arrangement_data:
-#                 SeatArrangement.objects.update_or_create(defaults={'allocation_id':data['allocation_id']},
-#                                                          student_id=data['student_id'],
-#                                                          seat_no=data['seat_no'])
 
 class SeatArrangementView(ListAPIView):
     serializer_class = SeatArrangementSerializer
@@ -99,14 +106,12 @@ class SeatArrangementView(ListAPIView):
                 else:
                     return qs.filter(allocation_id__date__date=date)
 
-                
-
 def allocate_students_to_halls(num_students, num_halls, hall_cap):
     # Calculate the maximum number of students per hall
     max_students_per_hall = num_students // num_halls
     remaining_students = num_students % num_halls
 
-     # Sort the halls based on their capacity
+    # Sort the halls based on their capacity
     sorted_halls = sorted(range(num_halls), key=lambda x: hall_cap[x])
 
     # Initialize the seating allocation dictionary
@@ -147,7 +152,6 @@ def allocate_students_to_halls(num_students, num_halls, hall_cap):
 class AllocateHallView(CreateAPIView):
     queryset = AllocateHall.objects.all()
     serializer_class = AllocateHallSerializer
-
 
     def post(self, request):
         allocation_data = request.data

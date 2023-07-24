@@ -44,7 +44,7 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
     }
   }
 
-  Future<void> _exportList() async {
+  Future<void> _exportList(context) async {
     if (seatResponse.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           Constants.snackBar(context, "Nothing to export", false));
@@ -218,19 +218,19 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                 ),
                 const SizedBox(height: 40.0),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(
-                      child: DefaultButton(
-                          onPressed: () {},
-                          text: "Shuffle List",
-                          textColor: Constants.splashBackColor,
-                          textSize: 18.0),
-                    ),
+                    // SizedBox(
+                    //   child: DefaultButton(
+                    //       onPressed: () {},
+                    //       text: "Shuffle List",
+                    //       textColor: Constants.splashBackColor,
+                    //       textSize: 18.0),
+                    // ),
                     SizedBox(
                       child: DefaultButton(
                           onPressed: () {
-                            _exportList();
+                            _exportList(context);
                           },
                           text: "Export List",
                           textColor: Constants.splashBackColor,

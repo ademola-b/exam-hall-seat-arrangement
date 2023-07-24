@@ -92,7 +92,7 @@ class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
                                           child: IconButton(
                                             onPressed: () {
                                               Navigator.pushNamed(
-                                                  context, '/hall');
+                                                  context, '/halls');
                                             },
                                             icon: const Icon(
                                                 Icons.account_balance),
@@ -103,7 +103,7 @@ class _ExamOfficerDashboardState extends State<ExamOfficerDashboard> {
                                       ),
                                     ),
                                     const DefaultText(
-                                      text: "Add Hall",
+                                      text: "Halls",
                                       size: 18.0,
                                       color: Constants.primaryColor,
                                     )

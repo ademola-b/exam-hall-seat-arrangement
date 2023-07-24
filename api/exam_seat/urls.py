@@ -1,6 +1,7 @@
 from django.urls import path
 from . views import (CourseView, HallView, SeatArrangementView, 
-                     AllocateHallView, AllocationsView, UpdateDeleteAllocationView)
+                     AllocateHallView, AllocationsView, 
+                     UpdateDeleteAllocationView, HallDelete)
 
 urlpatterns = [
     path('add-hall/', HallView.as_view(), name="Add_Hall"),
@@ -10,6 +11,7 @@ urlpatterns = [
     path('allocate-hall/', AllocateHallView.as_view(), name="Allocate Hall"),
     path('halls/', HallView.as_view(), name="Halls"),
     path('halls/<str:hall_id>/', HallView.as_view(), name="Halls"),
+    path('hall/delete/<str:pk>/', HallDelete.as_view(), name="Halls"),
     path('courses/', CourseView.as_view(), name="Courses"),
     path('courses/<str:course_id>/', CourseView.as_view(), name="Courses"),
     # path('seat-arrangement/', SeatArrangementCreate.as_view(), name="Seat Arrangement"),

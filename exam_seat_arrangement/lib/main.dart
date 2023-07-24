@@ -2,8 +2,8 @@ import 'package:exam_seat_arrangement/screens/exam_officer/allocateHall.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/allocatedHalls.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/examOfficerNavbar.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/hall.dart';
+import 'package:exam_seat_arrangement/screens/exam_officer/halls.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/invigilator.dart';
-import 'package:exam_seat_arrangement/screens/exam_officer/save_textField_data.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/seatArrangement.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/seatArrangementView.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/student.dart';
@@ -40,8 +40,11 @@ Route<dynamic> getRoutes(RouteSettings settings) {
     case '/examOfficerNavbar':
       return _buildRoute(settings, const ExamOfficerNavbar());
 
-    case '/hall':
+    case '/addHall':
       return _buildRoute(settings, const Hall());
+
+    case '/halls':
+      return _buildRoute(settings, const Halls());
 
     case '/allocateHall':
       return _buildRoute(settings, const AllocateHall());
@@ -64,10 +67,8 @@ Route<dynamic> getRoutes(RouteSettings settings) {
     case '/invigilator':
       return _buildRoute(settings, const Invigilator());
 
-  
     case '/changePassword':
       return _buildRoute(settings, const ChangePassword());
-
 
     default:
       return _buildRoute(settings, const SplashScreen());

@@ -133,8 +133,15 @@ class _MoreState extends State<More> {
                   ),
                   child: ListTile(
                     textColor: Colors.red,
-                    leading: const Icon(Icons.logout),
-                    title: const DefaultText(size: 15.0, text: "Logout"),
+                    leading: Icon(
+                      Icons.logout,
+                      color: Constants.pillColor,
+                    ),
+                    title: DefaultText(
+                      size: 15.0,
+                      text: "Logout",
+                      color: Constants.splashBackColor,
+                    ),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () async {
                       sharedPreferences.clear();

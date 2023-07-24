@@ -81,6 +81,11 @@ class RemoteServices {
     }
   }
 
+  // static Future<List<HallsResponse>?>? halls(context) {
+
+  //   return null;
+  // }
+
   static Future<AddHallResponse?> createHall(context,
       {String? name, String? seat_no, List<Map<String, dynamic>>? data}) async {
     try {
@@ -284,6 +289,20 @@ class RemoteServices {
           Constants.snackBar(context, "An error occurred: $e", false));
     }
     return [];
+  }
+
+  static Future<void> deleteHall(context, String? id) async {
+    try {
+      Response response = await http
+          .delete(Uri.parse("$baseUrl/api/exam-seat/hall/delete/$id/"));
+      if (response.statusCode == 204) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              Constants.snackBar(context, "Hall Successfully Deleted", false));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          Constants.snackBar(context, "An error occurred: $e", false));
+    }
   }
 
   static Future<List<CoursesResponse>?>? courses(context) async {
