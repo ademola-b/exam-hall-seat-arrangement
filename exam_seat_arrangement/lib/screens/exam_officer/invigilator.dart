@@ -69,8 +69,10 @@ class _InvigilatorState extends State<Invigilator> {
           ? showDialog(
               context: context,
               barrierDismissible: false,
-              builder: (context) =>
-                  const Center(child: CircularProgressIndicator()),
+              builder: (context) => const Center(
+                  child: CircularProgressIndicator(
+                color: Constants.primaryColor,
+              )),
             )
           : const SizedBox.shrink();
     });
@@ -96,7 +98,7 @@ class _InvigilatorState extends State<Invigilator> {
           .transform(const CsvToListConverter())
           .toList();
 
-      // print("fields: $fields");
+      print("fields: $fields");
 
       setState(() {
         // catch an exception if the user selects the wrong .csv file
@@ -132,6 +134,9 @@ class _InvigilatorState extends State<Invigilator> {
           _isLoading = false;
           _toggleLoading();
           setState(() {});
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              Constants.snackBar(context, "An error occured: $e", false));
         }
 
         print("listOfMap: $listOfMap");

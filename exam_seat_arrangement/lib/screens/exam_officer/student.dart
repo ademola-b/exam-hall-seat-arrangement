@@ -59,7 +59,10 @@ class _StudentState extends State<Student> {
     );
 
     // check if no file is picked
-    if (result == null) return;
+    if (result == null) {
+      Navigator.pop(context);
+      return;
+    }
 
     filePath = result.files.first.path!;
 
@@ -80,11 +83,10 @@ class _StudentState extends State<Student> {
           // check first row if contains the correct data(header)
           List<dynamic> fileHeader = fields.first;
           print("fileHeader: $fileHeader");
-          if (fileHeader[0] != 'name' &&
-              fileHeader[1] != 'username' &&
-              fileHeader[2] != 'level') {
+          if (fileHeader[2] != 'level') {
             ScaffoldMessenger.of(context).showSnackBar(Constants.snackBar(
                 context, "Oops!, you've selected the wrong file", false));
+            fileSelect = "No File Selected";
           } else {
             // convert the selected file to listToMap, skip the first row(header)
             listOfMap = fields.sublist(1).map((innerList) {
@@ -98,9 +100,6 @@ class _StudentState extends State<Student> {
               };
             }).toList();
 
-            // loop through file to check if any of the record exists
-            // display error message
-
             _isDisabled = false;
             fileSelect = "File Selected";
           }
@@ -112,6 +111,9 @@ class _StudentState extends State<Student> {
           _isLoading = false;
           _toggleLoading();
           setState(() {});
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              Constants.snackBar(context, "An error occured: $e", false));
         }
 
         print("listOfMap: $listOfMap");

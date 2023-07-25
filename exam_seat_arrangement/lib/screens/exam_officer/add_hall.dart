@@ -12,14 +12,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 
-class Hall extends StatefulWidget {
-  const Hall({super.key});
+class AddHall extends StatefulWidget {
+  const AddHall({super.key});
 
   @override
-  State<Hall> createState() => _HallState();
+  State<AddHall> createState() => _AddHallState();
 }
 
-class _HallState extends State<Hall> {
+class _AddHallState extends State<AddHall> {
   String? fileSelect = 'No file selected';
   bool _isDisabled = true;
   final _form = GlobalKey<FormState>();
@@ -28,10 +28,10 @@ class _HallState extends State<Hall> {
   // TextEditingController _seatNo = TextEditingController();
   bool _isLoading = false;
 
-  late List<Map<String, dynamic>> listOfMaps;
+  List<Map<String, dynamic>> listOfMaps = [{}];
   String? filePath;
 
-  _addHall() async {
+  _addHall(context) async {
     var isValid = _form.currentState!.validate();
     if (!isValid) return;
     _form.currentState!.save();
@@ -42,10 +42,26 @@ class _HallState extends State<Hall> {
 
     await RemoteServices.createHall(context, data: listOfMaps);
 
-    Navigator.pop(context);
+    Navigator.popAndPushNamed(context, '/halls');
+  }
+
+  void _toggleLoading() {
+    setState(() {
+      _isLoading
+          ? showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => const Center(
+                  child: CircularProgressIndicator(
+                color: Constants.primaryColor,
+              )),
+            )
+          : const SizedBox.shrink();
+    });
   }
 
   void _pickFile() async {
+    _toggleLoading();
     setState(() {
       _isLoading = true;
     });
@@ -54,12 +70,10 @@ class _HallState extends State<Hall> {
     );
 
     // check if no file is picked
-    if (result == null) return;
-    // showDialog(
-    //   context: context,
-    //   barrierDismissible: false,
-    //   builder: (context) => const Center(child: CircularProgressIndicator()),
-    // );
+    if (result == null) {
+      Navigator.pop(context);
+      return;
+    }
 
     filePath = result.files.first.path!;
 
@@ -72,26 +86,41 @@ class _HallState extends State<Hall> {
           .transform(const CsvToListConverter())
           .toList();
 
-      // print(fields);
+      print(fields);
 
       setState(() {
         // catch an exception if the user selects the wrong .csv file
         try {
-          listOfMaps = fields.map((innerList) {
-            List<String> keys = ['name', 'seat_no'];
-            return Map.fromIterables(keys, innerList);
-          }).toList();
+          // get the first row
+          List<dynamic> fileHeader = fields.first;
+          print("File Header: $fileHeader");
 
-          // loop through file to check if any of the record exists
-          // display error message
+          if (fileHeader[1] != 'seat_no') {
+            print("here");
 
-          _isDisabled = false;
-          fileSelect = "File Selected";
+            ScaffoldMessenger.of(context).showSnackBar(Constants.snackBar(
+                context, "Oops!, you've selected the wrong file", false));
+            // fileSelect = "No File Selected";
+          } else {
+            listOfMaps = fields.sublist(1).map((innerList) {
+              List<String> keys = ['name', 'seat_no'];
+              return Map.fromIterables(keys, innerList);
+            }).toList();
+            _isDisabled = false;
+            fileSelect = "File Selected";
+          }
         } on ArgumentError catch (e) {
           listOfMaps = [{}];
           ScaffoldMessenger.of(context).showSnackBar(Constants.snackBar(
               context, "Oops!, you've selected the wrong file", false));
           fileSelect = "No File Selected";
+          print("I'm here");
+          _isLoading = false;
+          _toggleLoading();
+          setState(() {});
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              Constants.snackBar(context, "An error occured: $e", false));
         }
 
         print("listOfMaps: $listOfMaps");
@@ -101,9 +130,11 @@ class _HallState extends State<Hall> {
       ScaffoldMessenger.of(context).showSnackBar(
           Constants.snackBar(context, "Invalid File Selected!!", false));
     }
+
+    // Navigator.pop(context);
   }
 
-  void _upload() async {
+  void _upload(context) async {
     // loop through file
     await RemoteServices.createHall(context, data: listOfMaps);
     Navigator.pop(context);
@@ -171,7 +202,7 @@ class _HallState extends State<Hall> {
                                     child: DefaultButton(
                                         color: Constants.primaryColor,
                                         onPressed: () {
-                                          _isDisabled ? null : _upload();
+                                          _isDisabled ? null : _upload(context);
                                         },
                                         text: "Upload File",
                                         textSize: 20.0),
@@ -206,19 +237,19 @@ class _HallState extends State<Hall> {
                         ),
                         const SizedBox(height: 20.0),
                         DefaultTextFormField(
-                          // text: _seatNo,
                           obscureText: false,
                           fontSize: 20.0,
                           label: "No. of Seats",
                           validator: Constants.validator,
                           onSaved: (value) => _seat_no = value!,
+                          keyboardInputType: TextInputType.number,
                         ),
                         const SizedBox(height: 20.0),
                         SizedBox(
                           width: size.width,
                           child: DefaultButton(
                               onPressed: () {
-                                _addHall();
+                                _addHall(context);
                               },
                               text: "Add Hall",
                               textSize: 20.0),

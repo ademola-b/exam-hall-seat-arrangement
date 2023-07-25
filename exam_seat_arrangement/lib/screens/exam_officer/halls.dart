@@ -80,6 +80,15 @@ class _HallsState extends State<Halls> {
                   keyboardInputType: TextInputType.text,
                 ),
                 const SizedBox(height: 50.0),
+                Center(
+                  child: DefaultText(
+                    text:
+                        "Below is a list of halls you can allocate your students",
+                    size: 18.0,
+                    color: Constants.splashBackColor,
+                  ),
+                ),
+                const SizedBox(height: 10.0),
                 Expanded(
                   child: Column(
                     children: [
@@ -97,13 +106,13 @@ class _HallsState extends State<Halls> {
                                     child: Column(
                                       children: [
                                         SvgPicture.asset(
-                                          "assets/images/no_data.svg",
-                                          width: 150,
-                                          height: 150,
+                                          "assets/images/hotel_room.svg",
+                                          width: 180,
+                                          height: 180,
                                         ),
                                         const SizedBox(height: 30.0),
                                         DefaultText(
-                                          text: "No Allocation found",
+                                          text: "No Hall Found",
                                           size: 18.0,
                                           color: Constants.pillColor,
                                           align: TextAlign.center,
@@ -192,9 +201,10 @@ class _HallsState extends State<Halls> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          tooltip: "Add Hall",
           backgroundColor: Constants.splashBackColor,
           onPressed: () {
-            Navigator.popAndPushNamed(context, '/addHall');
+            Navigator.pushNamed(context, '/addHall');
           },
           child: DefaultText(
             text: "+",
