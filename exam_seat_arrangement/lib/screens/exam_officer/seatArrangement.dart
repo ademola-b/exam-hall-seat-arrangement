@@ -125,6 +125,7 @@ class _SeatArrangementState extends State<SeatArrangement> {
                           fontSize: 20.0,
                           label: "Date",
                           icon: Icons.date_range,
+                          fillColor: Colors.white,
                           keyboardInputType: TextInputType.none,
                           validator: Constants.validator,
                         ),

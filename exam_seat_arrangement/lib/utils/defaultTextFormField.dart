@@ -67,8 +67,8 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
             borderSide: BorderSide(color: Colors.white)),
 
-        fillColor: Colors.white,
-        // fillColor: widget.fillColor,
+        // fillColor: Colors.white,
+        fillColor: widget.fillColor,
         filled: true,
         label: DefaultText(size: 20.0, text: "${widget.label}"),
         labelStyle: const TextStyle(color: Constants.primaryColor),

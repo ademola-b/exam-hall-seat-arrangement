@@ -135,9 +135,12 @@ class _AddHallState extends State<AddHall> {
   }
 
   void _upload(context) async {
-    // loop through file
+    _isLoading = true;
+    _toggleLoading();
     await RemoteServices.createHall(context, data: listOfMaps);
-    Navigator.pop(context);
+    // _isLoading = false;
+    // _toggleLoading();
+    Navigator.popAndPushNamed(context, '/halls');
   }
 
   @override

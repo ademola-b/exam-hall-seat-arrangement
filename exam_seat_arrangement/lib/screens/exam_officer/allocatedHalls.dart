@@ -115,6 +115,7 @@ class _AllocatedHallsState extends State<AllocatedHalls> {
                   text: _date,
                   obscureText: false,
                   icon: Icons.search_outlined,
+                  fillColor: Constants.splashBackColor,
                   maxLines: 1,
                   onTap: _pickDate,
                   keyboardInputType: TextInputType.none,

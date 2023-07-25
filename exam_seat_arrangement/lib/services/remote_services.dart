@@ -102,7 +102,7 @@ class RemoteServices {
       );
       if (response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
-            Constants.snackBar(context, "Hall Created Successfully", true));
+            Constants.snackBar(context, "Hall(s) Created Successfully", true));
         // Navigator.pop(context);
         // return addHallResponseFromJson(response.body);
       } else {
@@ -296,8 +296,8 @@ class RemoteServices {
       Response response = await http
           .delete(Uri.parse("$baseUrl/api/exam-seat/hall/delete/$id/"));
       if (response.statusCode == 204) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              Constants.snackBar(context, "Hall Successfully Deleted", false));
+        ScaffoldMessenger.of(context).showSnackBar(
+            Constants.snackBar(context, "Hall Successfully Deleted", false));
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

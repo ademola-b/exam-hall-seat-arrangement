@@ -24,7 +24,7 @@ class _DashboardState extends State<Dashboard> {
   String _username = "user";
   bool userType = false;
 
-  String today = DateFormat('yyyy-mm-dd').format(DateTime.now());
+  String today = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
   _getUser() async {
     UserDetailsResponse? user = await RemoteServices.userResponse(context);
@@ -45,6 +45,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    // print("today: $today");
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -100,7 +101,7 @@ class _DashboardState extends State<Dashboard> {
                       const SizedBox(height: 30.0),
                       FutureBuilder(
                           future: RemoteServices.viewSeatArrangement(
-                              context, "2023-06-27"),
+                              context, today),
                           builder: (context, snapshot) {
                             if (snapshot.hasData && snapshot.data!.isEmpty) {
                               return SizedBox(
@@ -148,7 +149,9 @@ class _DashboardState extends State<Dashboard> {
                                                   color: Constants.primaryColor,
                                                 ),
                                                 DefaultText(
-                                                  text: "xxx",
+                                                  text: data[index]!
+                                                      .allocationId
+                                                      .course,
                                                   size: 20.0,
                                                   color: Constants.pillColor,
                                                 ),

@@ -105,6 +105,9 @@ class SeatArrangementView(ListAPIView):
                     return qs
                 else:
                     return qs.filter(allocation_id__date__date=date)
+            elif not user.is_authenticated:
+                return SeatArrangement.objects.none()
+
 
 def allocate_students_to_halls(num_students, num_halls, hall_cap):
     # Calculate the maximum number of students per hall

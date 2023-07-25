@@ -72,11 +72,12 @@ class _HallsState extends State<Halls> {
                   ],
                 ),
                 const SizedBox(height: 40.0),
-                const DefaultTextFormField(
+                DefaultTextFormField(
                   label: "Search by hall name",
                   obscureText: false,
                   icon: Icons.search_outlined,
                   maxLines: 1,
+                  fillColor: Constants.splashBackColor,
                   keyboardInputType: TextInputType.text,
                 ),
                 const SizedBox(height: 50.0),
@@ -204,7 +205,7 @@ class _HallsState extends State<Halls> {
           tooltip: "Add Hall",
           backgroundColor: Constants.splashBackColor,
           onPressed: () {
-            Navigator.pushNamed(context, '/addHall');
+            Navigator.popAndPushNamed(context, '/addHall');
           },
           child: DefaultText(
             text: "+",

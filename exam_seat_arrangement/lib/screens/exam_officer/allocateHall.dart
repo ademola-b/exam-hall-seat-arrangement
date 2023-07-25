@@ -189,6 +189,7 @@ class _AllocateHallState extends State<AllocateHall> {
                           icon: Icons.date_range,
                           label: "Date",
                           onTap: _pickDateTime,
+                          fillColor: Colors.white,
                           keyboardInputType: TextInputType.none,
                           validator: Constants.validator,
                         ),
