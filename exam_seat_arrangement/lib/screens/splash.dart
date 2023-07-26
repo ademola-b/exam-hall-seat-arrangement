@@ -6,11 +6,8 @@ import 'package:exam_seat_arrangement/screens/login.dart';
 import 'package:exam_seat_arrangement/screens/student/bottomNavbar.dart';
 import 'package:exam_seat_arrangement/services/remote_services.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
-import 'package:exam_seat_arrangement/utils/defaultText.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -53,22 +50,6 @@ class _SplashScreenState extends State<SplashScreen> {
     return null;
   }
 
-  // checkLogin(context) async {
-  //   String? token = sharedPreferences.getString('token');
-  //   if (token != null) {
-  //     UserDetailsResponse? user = await RemoteServices.userResponse(context);
-  //     if (user != null) {
-  //       user.isExamofficer
-  //           ? Navigator.popAndPushNamed(context, '/examOfficerNavbar')
-  //           : user.isInvigilator || user.isStudent
-  //               ? Navigator.popAndPushNamed(context, '/bottomNavbar')
-  //               : Navigator.popAndPushNamed(context, '/login');
-  //     } else {
-  //       ScaffoldMessenger.of(context)
-  //           .showSnackBar(Constants.snackBar(context, "Invalid User", false));
-  //     }
-  //   }
-  // }
 
   @override
   void initState() {

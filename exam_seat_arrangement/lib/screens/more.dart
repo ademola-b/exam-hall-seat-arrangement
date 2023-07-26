@@ -117,6 +117,7 @@ class _MoreState extends State<More> {
                             ),
                             trailing: const Icon(
                               Icons.arrow_forward_ios,
+                              color: Constants.primaryColor,
                             ),
                             onTap: () {
                               Navigator.pushNamed(context, _labelRoutes[index]);
@@ -142,7 +143,10 @@ class _MoreState extends State<More> {
                       text: "Logout",
                       color: Constants.splashBackColor,
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Constants.primaryColor,
+                    ),
                     onTap: () async {
                       sharedPreferences.clear();
                       Navigator.pushNamedAndRemoveUntil(

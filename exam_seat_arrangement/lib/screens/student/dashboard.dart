@@ -130,6 +130,7 @@ class _DashboardState extends State<Dashboard> {
                             } else if (snapshot.hasData) {
                               var data = snapshot.data;
                               return ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   scrollDirection: Axis.vertical,
                                   itemCount: data!.length,
@@ -151,7 +152,8 @@ class _DashboardState extends State<Dashboard> {
                                                 DefaultText(
                                                   text: data[index]!
                                                       .allocationId
-                                                      .course,
+                                                      .course
+                                                      .courseTitle,
                                                   size: 20.0,
                                                   color: Constants.pillColor,
                                                 ),

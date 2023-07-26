@@ -75,11 +75,23 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
       final File file = File(path);
       await file.writeAsString(csv);
 
-      Constants.dialogBox(context,
-          text: "Hall and Seats Successfully Allocated",
-          color: Colors.white,
-          textColor: Constants.primaryColor,
-          buttonText: "Okay");
+      Constants.dialogBox(
+        context,
+        text: "Hall and Seats Successfully Allocated",
+        color: Colors.white,
+        textColor: Constants.primaryColor,
+        actions: [
+          TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+              },
+              child: DefaultText(
+                text: "Okay",
+                color: Constants.backgroundColor,
+                size: 18.0,
+              )),
+        ],
+      );
     }
   }
 

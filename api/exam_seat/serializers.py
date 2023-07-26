@@ -43,7 +43,8 @@ class AllocateHallSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SeatArrangementSerializer(serializers.ModelSerializer):
-    allocation_id = AllocateHallSerializer()
+    # allocation_id = AllocateHallSerializer()
+    allocation_id = AllocationsSerializer()
     student_id = StudentSerializer()
     hall_id = HallSerializer()
     class Meta:

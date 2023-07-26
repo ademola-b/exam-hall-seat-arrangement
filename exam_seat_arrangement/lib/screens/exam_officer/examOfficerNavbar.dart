@@ -1,6 +1,6 @@
 import 'package:exam_seat_arrangement/screens/exam_officer/dashboard.dart';
 import 'package:exam_seat_arrangement/screens/exam_officer/studentInvigilator.dart';
-import 'package:exam_seat_arrangement/screens/student/more.dart';
+import 'package:exam_seat_arrangement/screens/more.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:fancy_bottom_navigation_2/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
