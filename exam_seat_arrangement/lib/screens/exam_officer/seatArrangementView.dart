@@ -296,7 +296,7 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                                     shrinkWrap: true,
                                     scrollDirection: Axis.vertical,
                                     physics:
-                                        const NeverScrollableScrollPhysics(),
+                                        const AlwaysScrollableScrollPhysics(),
                                     itemCount: data!.length,
                                     itemBuilder: (context, index) {
                                       return DefaultContainer(

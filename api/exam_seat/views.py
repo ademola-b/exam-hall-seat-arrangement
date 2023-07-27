@@ -1,3 +1,4 @@
+from datetime import datetime
 from random import shuffle
 
 from django.shortcuts import render
@@ -162,11 +163,16 @@ class AllocateHallView(CreateAPIView):
         allocation_data = request.data
         allocation_serializer = AllocateHallSerializer(data=allocation_data)
         dept = request.user.dept_id
-        print(f"allocation_data: {allocation_data}")
+        alloc_date_conv = datetime.strptime(allocation_data['date'], "%Y-%m-%dT%H:%M:%S.%f%z").date()
+        
+        print(f"allocation_date conv: {alloc_date_conv}")
 
         if allocation_serializer.is_valid():
 
-            if AllocateHall.objects.filter(date =  allocation_data['date'], level = allocation_data['level'], course_id = allocation_data['course']).exists():
+            alloc_date = AllocateHall.objects.filter(date__date = alloc_date_conv, level = allocation_data['level'], course_id = allocation_data['course']).exists()
+
+            if alloc_date:
+                
                 return Response({'exists': "Allocation already done on this date and course"}, status=status.HTTP_400_BAD_REQUEST)
             else:
 
@@ -206,7 +212,6 @@ class AllocateHallView(CreateAPIView):
                                         remaining_seats[hall] = seats
                                     else:
                                         break
-
 
                             # Distribute any remaining students evenly across the halls
                             for hall in sorted_halls:

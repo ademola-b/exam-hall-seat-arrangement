@@ -54,4 +54,4 @@ class SeatArrangement(models.Model):
     seat_no = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.student_id.user_id.username} allocated to {self.hall_id.name} on seat number {self.seat_no} to write {self.allocation_id.course.course_desc}"
+        return f"{self.student_id.user_id.username} allocated to {self.hall_id.name} on seat number {self.seat_no} to write {self.allocation_id.course.course_desc} on {self.allocation_id.date}"
