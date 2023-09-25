@@ -4,6 +4,7 @@ import 'package:csv/csv.dart';
 import 'package:exam_seat_arrangement/models/courses_responses.dart';
 import 'package:exam_seat_arrangement/models/halls_response.dart';
 import 'package:exam_seat_arrangement/models/seat_arrangement_response.dart';
+import 'package:exam_seat_arrangement/models/seat_arrangement_view_response.dart';
 import 'package:exam_seat_arrangement/services/remote_services.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:exam_seat_arrangement/utils/defaultButton.dart';
@@ -23,7 +24,7 @@ class SeatArrangementView extends StatefulWidget {
 class _SeatArrangementViewState extends State<SeatArrangementView> {
   String? _hall_name;
   String? _course_name;
-  List<SeatArrangementResponse> seatResponse = [];
+  List<SeatArrangementViewResponse> seatResponse = [];
   String? hall_seats;
   int? seats_allocated;
 
@@ -57,8 +58,8 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
         ],
         <String>['Name', 'Registration No', 'Seat Number'],
         ...seatResponse.map((data) => [
-              data.studentId.userId.name,
-              data.studentId.userId.username,
+              data.studentId!.userId!.name!,
+              data.studentId!.userId!.username!,
               data.seatNo.toString()
             ])
       ];
@@ -96,7 +97,7 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
   }
 
   _getSeatArrangement() async {
-    List<SeatArrangementResponse>? seatArr =
+    List<SeatArrangementViewResponse>? seatArr =
         await RemoteServices.seatArrangementForExamOfficer(
             context,
             widget.arguments['date'],
@@ -106,7 +107,7 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
       setState(() {
         seatResponse = seatArr;
         seats_allocated = seatArr.length;
-        hall_seats = seatArr[0].hallId.seatNo.toString();
+        hall_seats = seatArr[0].hallId!.seatNo.toString();
       });
     } else {
       setState(() {
@@ -265,6 +266,7 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                                     widget.arguments['course']),
                             builder: (context, snapshot) {
                               if (snapshot.hasData && snapshot.data!.isEmpty) {
+                                print("he");
                                 return SizedBox(
                                   width: size.width,
                                   child: DefaultContainer(
@@ -291,7 +293,9 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                                   ),
                                 );
                               } else if (snapshot.hasData) {
+                                print("data dey");
                                 var data = snapshot.data;
+                                print("data - ${snapshot.data}");
                                 return ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.vertical,
@@ -304,13 +308,13 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                                           title: DefaultText(
                                               size: 18.0,
                                               text: data[index]
-                                                  .studentId
-                                                  .userId
+                                                  .studentId!
+                                                  .userId!
                                                   .name),
                                           subtitle: DefaultText(
                                               text: data[index]
-                                                  .studentId
-                                                  .userId
+                                                  .studentId!
+                                                  .userId!
                                                   .username),
                                           trailing: CircleAvatar(
                                             radius: 50,

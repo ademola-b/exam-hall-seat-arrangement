@@ -11,6 +11,7 @@ import 'package:exam_seat_arrangement/models/invigilators_list_response.dart';
 import 'package:exam_seat_arrangement/models/login_response.dart';
 import 'package:exam_seat_arrangement/models/password_change_response.dart';
 import 'package:exam_seat_arrangement/models/seat_arrangement_response.dart';
+import 'package:exam_seat_arrangement/models/seat_arrangement_view_response.dart';
 import 'package:exam_seat_arrangement/models/student_response.dart';
 import 'package:exam_seat_arrangement/models/user_response.dart';
 import 'package:exam_seat_arrangement/services/urls.dart';
@@ -80,11 +81,6 @@ class RemoteServices {
           Constants.snackBar(context, "An error occurred: $e", false));
     }
   }
-
-  // static Future<List<HallsResponse>?>? halls(context) {
-
-  //   return null;
-  // }
 
   static Future<AddHallResponse?> createHall(context,
       {String? name, String? seat_no, List<Map<String, dynamic>>? data}) async {
@@ -236,7 +232,7 @@ class RemoteServices {
     return [];
   }
 
-  static Future<List<SeatArrangementResponse>?>? seatArrangementForExamOfficer(
+  static Future<List<SeatArrangementViewResponse>?>? seatArrangementForExamOfficer(
       context, String? date, String? hall_id, String course_id) async {
     try {
       Response response = await http.get(
@@ -247,7 +243,8 @@ class RemoteServices {
             'Authorization': "Token ${sharedPreferences.getString("token")}"
           });
       if (response.statusCode == 200) {
-        return seatArrangementResponseFromJson(response.body);
+        print(json.decode(response.body));
+        return seatArrangementViewResponseFromJson(response.body);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -280,6 +280,7 @@ class _StudentState extends State<Student> {
                           obscureText: false,
                           fontSize: 20.0,
                           label: "Name",
+                          fillColor: Colors.white,
                           onSaved: (value) {
                             _name = value!;
                           },
@@ -290,6 +291,7 @@ class _StudentState extends State<Student> {
                           obscureText: false,
                           fontSize: 20.0,
                           label: "Registration No",
+                          fillColor: Colors.white,
                           onSaved: (value) {
                             _regNo = value!;
                           },

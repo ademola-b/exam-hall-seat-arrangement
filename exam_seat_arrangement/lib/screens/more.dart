@@ -20,15 +20,15 @@ class _MoreState extends State<More> {
   var profile_pic;
 
   final List<String> _labels = [
-    "Personal Information",
+    // "Personal Information",
     "Change password",
-    "About Application",
+    // "About Application",
   ];
 
   final List<IconData> _labelIcons = [
-    Icons.person,
+    // Icons.person,
     Icons.lock,
-    Icons.add,
+    // Icons.add,
   ];
 
   final List<String> _labelRoutes = ['/profile', '/changePassword', '/about'];

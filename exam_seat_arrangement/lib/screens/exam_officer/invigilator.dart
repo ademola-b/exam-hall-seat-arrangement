@@ -258,6 +258,7 @@ class _InvigilatorState extends State<Invigilator> {
                           obscureText: false,
                           fontSize: 20.0,
                           label: "Name",
+                          fillColor: Colors.white,
                           onSaved: (value) {
                             _name = value!;
                           },
@@ -269,6 +270,7 @@ class _InvigilatorState extends State<Invigilator> {
                           obscureText: false,
                           fontSize: 20.0,
                           label: "Username",
+                          fillColor: Colors.white,
                           onSaved: (value) {
                             _username = value!;
                           },
@@ -280,6 +282,7 @@ class _InvigilatorState extends State<Invigilator> {
                           obscureText: false,
                           fontSize: 20.0,
                           label: "Phone No",
+                          fillColor: Colors.white,
                           keyboardInputType:
                               const TextInputType.numberWithOptions(),
                           onSaved: (value) {
