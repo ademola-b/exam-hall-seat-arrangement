@@ -4,12 +4,9 @@ import 'package:exam_seat_arrangement/services/remote_services.dart';
 import 'package:exam_seat_arrangement/utils/constants.dart';
 import 'package:exam_seat_arrangement/utils/defaultContainer.dart';
 import 'package:exam_seat_arrangement/utils/defaultText.dart';
-import 'package:exam_seat_arrangement/utils/defaultTextFormField.dart';
-import 'package:exam_seat_arrangement/utils/string_extension.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -99,117 +96,225 @@ class _DashboardState extends State<Dashboard> {
                               align: TextAlign.center,
                             ),
                       const SizedBox(height: 30.0),
-                      FutureBuilder(
-                          future: RemoteServices.viewSeatArrangement(
-                              context, today),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData && snapshot.data!.isEmpty) {
-                              return SizedBox(
-                                width: size.width,
-                                child: DefaultContainer(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/images/no_data.svg",
-                                          width: 150,
-                                          height: 150,
-                                        ),
-                                        const SizedBox(height: 30.0),
-                                        DefaultText(
-                                          text: "No Allocation yet for today",
-                                          size: 22.0,
-                                          color: Constants.pillColor,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            } else if (snapshot.hasData) {
-                              var data = snapshot.data;
-                              return ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: data!.length,
-                                  itemBuilder: (context, index) {
-                                    return DefaultContainer(
+                      userType
+                          ? FutureBuilder(
+                              future: RemoteServices.viewSeatArrangement(
+                                  context, today),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData &&
+                                    snapshot.data!.isEmpty) {
+                                  return SizedBox(
+                                    width: size.width,
+                                    child: DefaultContainer(
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Column(
                                           children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                const DefaultText(
-                                                  text: "COURSE",
-                                                  size: 20.0,
-                                                  color: Constants.primaryColor,
-                                                ),
-                                                DefaultText(
-                                                  text: data[index]!
-                                                      .allocationId
-                                                      .course
-                                                      .courseTitle,
-                                                  size: 20.0,
-                                                  color: Constants.pillColor,
-                                                ),
-                                              ],
+                                            SvgPicture.asset(
+                                              "assets/images/no_data.svg",
+                                              width: 150,
+                                              height: 150,
                                             ),
-                                            const SizedBox(height: 20.0),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                const DefaultText(
-                                                  text: "HALL NAME",
-                                                  size: 20.0,
-                                                  color: Constants.primaryColor,
-                                                ),
-                                                DefaultText(
-                                                  text:
-                                                      data[index]!.hallId.name,
-                                                  size: 20.0,
-                                                  color: Constants.pillColor,
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 20.0),
-                                            userType
-                                                ? Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      const DefaultText(
-                                                        text: "SEAT NO.",
-                                                        size: 20.0,
-                                                        color: Constants
-                                                            .primaryColor,
-                                                      ),
-                                                      DefaultText(
-                                                        text: data[index]!
-                                                            .seatNo
-                                                            .toString(),
-                                                        size: 25.0,
-                                                        color:
-                                                            Constants.pillColor,
-                                                      ),
-                                                    ],
-                                                  )
-                                                : const SizedBox.shrink(),
-                                            const SizedBox(height: 20.0),
+                                            const SizedBox(height: 30.0),
+                                            DefaultText(
+                                              text:
+                                                  "No Allocation yet for today",
+                                              size: 22.0,
+                                              color: Constants.pillColor,
+                                            )
                                           ],
                                         ),
                                       ),
-                                    );
-                                  });
-                            }
-                            return const CircularProgressIndicator();
-                          }),
+                                    ),
+                                  );
+                                } else if (snapshot.hasData) {
+                                  var data = snapshot.data;
+                                  return ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: data!.length,
+                                      itemBuilder: (context, index) {
+                                        return DefaultContainer(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    const DefaultText(
+                                                      text: "COURSE",
+                                                      size: 20.0,
+                                                      color: Constants
+                                                          .primaryColor,
+                                                    ),
+                                                    DefaultText(
+                                                      text: data[index]!
+                                                          .allocationId!
+                                                          .course!
+                                                          .courseTitle,
+                                                      size: 20.0,
+                                                      color:
+                                                          Constants.pillColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 20.0),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    const DefaultText(
+                                                      text: "HALL NAME",
+                                                      size: 20.0,
+                                                      color: Constants
+                                                          .primaryColor,
+                                                    ),
+                                                    DefaultText(
+                                                      text: data[index]!
+                                                          .hallId!
+                                                          .name,
+                                                      size: 20.0,
+                                                      color:
+                                                          Constants.pillColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 20.0),
+                                                // userType
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    const DefaultText(
+                                                      text: "SEAT NO.",
+                                                      size: 20.0,
+                                                      color: Constants
+                                                          .primaryColor,
+                                                    ),
+                                                    DefaultText(
+                                                      text: data[index]!
+                                                          .seatNo
+                                                          .toString(),
+                                                      size: 25.0,
+                                                      color:
+                                                          Constants.pillColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                                // : const SizedBox.shrink(),
+                                                const SizedBox(height: 20.0),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                }
+                                return const CircularProgressIndicator();
+                              })
+                          : FutureBuilder(
+                              future: RemoteServices.viewSeatArrangement(
+                                  context, today),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData &&
+                                    snapshot.data!.isEmpty) {
+                                  return SizedBox(
+                                    width: size.width,
+                                    child: DefaultContainer(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/images/no_data.svg",
+                                              width: 150,
+                                              height: 150,
+                                            ),
+                                            const SizedBox(height: 30.0),
+                                            DefaultText(
+                                              text:
+                                                  "No Allocation yet for today",
+                                              size: 22.0,
+                                              color: Constants.pillColor,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                } else if (snapshot.hasData) {
+                                  var data = snapshot.data;
+                                  return ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: 1,
+                                      itemBuilder: (context, index) {
+                                        return DefaultContainer(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    const DefaultText(
+                                                      text: "COURSE",
+                                                      size: 20.0,
+                                                      color: Constants
+                                                          .primaryColor,
+                                                    ),
+                                                    DefaultText(
+                                                      text: data![index]!
+                                                          .allocationId!
+                                                          .course!
+                                                          .courseTitle,
+                                                      size: 20.0,
+                                                      color:
+                                                          Constants.pillColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 20.0),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    const DefaultText(
+                                                      text: "HALL NAME",
+                                                      size: 20.0,
+                                                      color: Constants
+                                                          .primaryColor,
+                                                    ),
+                                                    DefaultText(
+                                                      text: data[index]!
+                                                          .hallId!
+                                                          .name,
+                                                      size: 20.0,
+                                                      color:
+                                                          Constants.pillColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 20.0),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                }
+                                return const CircularProgressIndicator();
+                              }),
                     ],
                   ),
                 )),

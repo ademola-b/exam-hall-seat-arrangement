@@ -101,7 +101,7 @@ class SeatArrangementView(ListAPIView):
                 qs = qs.filter(allocation_id__date__date=date, student_id=self.request.user.student)
                 return qs
             elif user.is_invigilator:
-                qs = qs.filter(allocation_id__date__date=date, allocation_id__invigilator=self.request.user.invigilator)
+                qs = qs.filter(allocation_id__date__date=date, allocation_id__invigilator=self.request.user.invigilator).first()
                 return qs
             elif user.is_examofficer:
                 if hall and course:
@@ -109,8 +109,6 @@ class SeatArrangementView(ListAPIView):
                     return qs
                 else:
                     return qs.filter(allocation_id__date__date=date)
-
-
 
 def allocate_students_to_halls(num_students, num_halls, hall_cap):
     # Calculate the maximum number of students per hall
@@ -172,10 +170,8 @@ class AllocateHallView(CreateAPIView):
             alloc_date = AllocateHall.objects.filter(date__date = alloc_date_conv, level = allocation_data['level'], course_id = allocation_data['course']).exists()
 
             if alloc_date:
-                
                 return Response({'exists': "Allocation already done on this date and course"}, status=status.HTTP_400_BAD_REQUEST)
             else:
-
                 try:
                     # get hall seat number
                     halls = Hall.objects.filter(user_id = self.request.user)

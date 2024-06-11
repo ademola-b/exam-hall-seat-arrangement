@@ -72,15 +72,15 @@ class _HallsState extends State<Halls> {
                   ],
                 ),
                 const SizedBox(height: 40.0),
-                DefaultTextFormField(
-                  label: "Search by hall name",
-                  obscureText: false,
-                  icon: Icons.search_outlined,
-                  maxLines: 1,
-                  fillColor: Constants.splashBackColor,
-                  keyboardInputType: TextInputType.text,
-                ),
-                const SizedBox(height: 50.0),
+                // DefaultTextFormField(
+                //   label: "Search by hall name",
+                //   obscureText: false,
+                //   icon: Icons.search_outlined,
+                //   maxLines: 1,
+                //   fillColor: Constants.splashBackColor,
+                //   keyboardInputType: TextInputType.text,
+                // ),
+                // const SizedBox(height: 50.0),
                 Center(
                   child: DefaultText(
                     text:
@@ -89,7 +89,7 @@ class _HallsState extends State<Halls> {
                     color: Constants.splashBackColor,
                   ),
                 ),
-                const SizedBox(height: 10.0),
+                const SizedBox(height: 20.0),
                 Expanded(
                   child: Column(
                     children: [

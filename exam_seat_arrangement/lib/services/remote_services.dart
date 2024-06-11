@@ -213,7 +213,7 @@ class RemoteServices {
     return null;
   }
 
-  static Future<List<SeatArrangementResponse?>?> viewSeatArrangement(
+  static Future<List<SeatArrangementViewResponse?>?> viewSeatArrangement(
       context, String? date) async {
     try {
       Response response = await http.get(
@@ -223,7 +223,7 @@ class RemoteServices {
             'Authorization': "Token ${sharedPreferences.getString("token")}"
           });
       if (response.statusCode == 200) {
-        return seatArrangementResponseFromJson(response.body);
+        return seatArrangementViewResponseFromJson(response.body);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -348,7 +348,7 @@ class RemoteServices {
         return allocateHallResponseFromJson(response.body);
       } else {
         var responseData = jsonDecode(response.body);
-        print(responseData);
+        // print(responseData);
         if (responseData['exists'] != null) {
           ScaffoldMessenger.of(context).showSnackBar(
               Constants.snackBar(context, "${responseData['exists']}", false));

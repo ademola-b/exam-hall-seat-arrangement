@@ -78,7 +78,7 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
 
       Constants.dialogBox(
         context,
-        text: "Hall and Seats Successfully Allocated",
+        text: "List Successfully Exported",
         color: Colors.white,
         textColor: Constants.primaryColor,
         actions: [
@@ -266,7 +266,6 @@ class _SeatArrangementViewState extends State<SeatArrangementView> {
                                     widget.arguments['course']),
                             builder: (context, snapshot) {
                               if (snapshot.hasData && snapshot.data!.isEmpty) {
-                                print("he");
                                 return SizedBox(
                                   width: size.width,
                                   child: DefaultContainer(
